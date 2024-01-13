@@ -1,26 +1,19 @@
 package ed_trabalho;
 
 public class Flag {
-    private FlagColour colour;
-    private Player player;
+    private String colour;
 
     //Constructors
-    public Flag(FlagColour colour, Player player){
+    public Flag(String colour){
         this.colour = colour;
-        this.player = player;
+
     }
 
     //Getters and Setters
-    public FlagColour getColour(){
+    public String  getColour(){
         return colour;
     }
-    public void setColour(FlagColour colour){
+    public void setColour(String  colour){
         this.colour = colour;
-    }
-    public Player getPlayer(){
-        return player;
-    }
-    public void setPlayer(Player player){
-        this.player = player;
     }
 }

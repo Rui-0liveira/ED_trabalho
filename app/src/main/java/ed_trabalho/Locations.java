@@ -19,6 +19,15 @@ public class Locations {
         contador++;
     }
 
+    public boolean isLocationFree(){
+        if(hasBot == false){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
     //Getters and Setters
     public boolean getHasFlag(){
         return hasFlag;

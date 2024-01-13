@@ -230,6 +230,7 @@ public class Graph<T> implements GraphADT<T> {
     public int size() {
         return numVertices;
     }
+
     public void addVertex (T vertex) {
         if (numVertices == vertices.length)
             expandCapacity();
@@ -240,6 +241,7 @@ public class Graph<T> implements GraphADT<T> {
         }
         numVertices++;
     }
+
     public void removeVertex(int index) {
         if (indexIsValid(index)) {
             numVertices--;
@@ -286,6 +288,7 @@ public class Graph<T> implements GraphADT<T> {
         }
         return -1;
     }
+
     public boolean indexIsValid(int index) {
         return (index >= 0) && (index < numVertices);
     }
@@ -390,4 +393,10 @@ public class Graph<T> implements GraphADT<T> {
         }
         return resultGraph;
     }
+
+    public T getVertex(int index){
+        return vertices[index];
+    }
+
+
 }
