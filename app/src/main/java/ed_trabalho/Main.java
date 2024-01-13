@@ -1,20 +1,14 @@
 package ed_trabalho;
+
+import java.io.IOException;
+
 public class Main {
-    public static void main(String[] args) {
-        Map map = new Map();
+    public static void main(String[] args) throws NumberFormatException, IOException {
+        
+        Game game = new Game();
 
-        Locations local1 = new Locations();
-        Locations local2 = new Locations();
-        Locations local3 = new Locations();
-        System.out.println(local1.toString());
-        /*map.addLocal(local1);
-        map.addLocal(local2);
-        map.addLocal(local3);
+        game.createMap();
 
-        map.addEdge(local1.getIndex(), local2.getIndex(), 2);
-        map.addEdge(local1.getIndex(), local3.getIndex(), 2);
-        map.addEdge(local2.getIndex(), local3.getIndex(), 2);
-
-        System.out.println(map.toString());*/
+        
     }
 }
