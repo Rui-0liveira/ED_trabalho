@@ -8,5 +8,6 @@ public class Main {
         Game game = new Game();
 
         game.createMap();
+        System.out.println(game.getMap().getNetwork().toString());
     }
 }
