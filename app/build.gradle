@@ -28,3 +28,6 @@ application {
     // Define the main class for the application.
     mainClass = 'ed_trabalho.Main'
 }
+run{
+    standardInput = System.in
+}

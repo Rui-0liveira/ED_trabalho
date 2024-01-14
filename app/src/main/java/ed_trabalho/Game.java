@@ -6,14 +6,16 @@ import java.io.InputStreamReader;
 import java.util.Random;
 
 import ClassImplementation.LinkedList;
+import java.util.Scanner;
+import java.util.InputMismatchException;
 
 public class Game {
-    private LinkedList<Map> maps;
+    private Map map;
     private LinkedList<Player> players;
     private LinkedList<Round> rounds;
 
     public Game(){
-        this.maps = new LinkedList<Map>();
+        this.map = new Map();
         this.players = new LinkedList<Player>();
         this.rounds = new LinkedList<Round>();
     }
@@ -38,21 +40,19 @@ public class Game {
                 map.getNetwork().addEdge(i, index, distance);
             }
         }
-
+        map.getNetwork().toString();
     }
 
     
     public int lerInt() throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         try{
             return Integer.parseInt(br.readLine());
         }catch(NumberFormatException e){
             System.out.println("Valor invalido! Insira novamente: ");
-            return lerInt();
+            return 1;
         }
-     
     }
-    
     
     public void initiatePlayer(){
         for(int i = 0; i < 2; i++){
@@ -72,11 +72,25 @@ public class Game {
     public String ler() throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
         return br.readLine();
-    }
+    } 
+    
 
     public int randomDistance() {
         Random random = new Random();
         int randomNumber = random.nextInt(15) + 1;
         return randomNumber;
     }
+
+    public Map getMap() {
+        return map;
+    }
+
+    public LinkedList<Player> getPlayers() {
+        return players;
+    }
+
+    public LinkedList<Round> getRounds() {
+        return rounds;
+    }
+    
 }
