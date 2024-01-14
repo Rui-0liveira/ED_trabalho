@@ -14,8 +14,6 @@ public class Main {
         decidir densidade das arestas(numero de arestas tem que seguir a regra (N* (N -1)) * 0.5, sendo N o numero de vertices e 0.5 a densidade)
         */ 
         game.createMap();
-<<<<<<< Updated upstream
-=======
         System.out.println(game.getMap().getNetwork().toString());
         /*
          * escolher bandeira
@@ -31,6 +29,5 @@ public class Main {
          * 
          * começar jogo(o 1º a jogar é decidido aleatoriamente)
          */
->>>>>>> Stashed changes
     }
 }

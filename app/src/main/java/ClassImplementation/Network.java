@@ -15,7 +15,7 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
     }
 
     public Network() {
-        super();
+        numVertices = 0;
         this.adjMatrix = new double[DEFAULT_CAPACITY][DEFAULT_CAPACITY];
         this.vertices = (T[]) (new Object[DEFAULT_CAPACITY]);
     }
@@ -473,6 +473,4 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
     public boolean hasEdge(int startIndex, int targetIndex){
         return adjMatrix[startIndex][targetIndex] > 0;
     }
-    
 }
-

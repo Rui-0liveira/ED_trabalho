@@ -20,10 +20,7 @@ public class Game {
         this.rounds = new LinkedList<Round>();
     }
 
-    //Rebentar por causa do lerInt
-    //Verificação dos vertices
     public void createMap() throws NumberFormatException, IOException{
-        Map map = new Map();
         initiatePlayer();
         
         int numVert = lerInt();
@@ -42,7 +39,6 @@ public class Game {
                 map.getNetwork().addEdge(i, index, distance);
             }
         }
-        map.getNetwork().toString();
     }
 
     
