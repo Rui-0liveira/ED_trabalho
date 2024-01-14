@@ -20,6 +20,8 @@ public class Game {
         this.rounds = new LinkedList<Round>();
     }
 
+    //Rebentar por causa do lerInt
+    //Verificação dos vertices
     public void createMap() throws NumberFormatException, IOException{
         Map map = new Map();
         initiatePlayer();

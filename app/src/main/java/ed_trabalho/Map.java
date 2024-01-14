@@ -4,7 +4,7 @@ import java.util.Random;
 
 import ClassImplementation.Network;
 
-public class Map {
+public class Map{
     private Network<Locations> network;
 
     public Map(){
