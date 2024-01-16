@@ -7,6 +7,9 @@ import java.util.Random;
 
 import ClassImplementation.LinkedList;
 import java.util.Scanner;
+
+import org.checkerframework.checker.units.qual.t;
+
 import java.util.InputMismatchException;
 
 public class Game {
@@ -21,7 +24,6 @@ public class Game {
     }
 
     public void createMap() throws NumberFormatException, IOException{
-        initiatePlayer();
         
         int numVert = lerInt();
 
@@ -29,14 +31,42 @@ public class Game {
             Locations newLocation = new Locations();
             map.addLocal(newLocation);
         }
-        for(int i = 0; i < numVert; i++){
-            System.out.println("Insira o numero de vertices adjacentes ao vertice " + i + ": ");
-            int numAdj = lerInt();
-            for(int j = 0; j < numAdj; j++){
-                System.out.println("Insira o indice do vertice adjacente: ");
-                int index = lerInt();
-                int distance = randomDistance();
-                map.getNetwork().addEdge(i, index, distance);
+        
+        float numArestas;
+        System.out.println("Insira 1 se o mapa for bidirecional ou 0 se for direcional: ");
+        int temp = lerInt();
+        boolean bidirecional = true;
+        if(temp == 0){
+            bidirecional = false;
+        }
+        if(!bidirecional){
+            System.out.println("Insira a densidade de arestas: ");
+            float densidade = lerInt();
+            float x = densidade/100;
+            numArestas = (numVert * (numVert - 1)) * (x);
+        }
+        else{
+            //falta verificar se ele insere um numero de arestas possivel
+            System.out.println("Insira o numero de arestas: ");
+            numArestas = lerInt();
+        }
+        
+        int count = 0;
+        while(count < numArestas){
+            Random random = new Random();
+            int randomNumber1 = random.nextInt(numVert);
+            int randomNumber2 = random.nextInt(numVert);
+            if(randomNumber1 != randomNumber2){
+                if(!map.getNetwork().hasEdge(randomNumber1, randomNumber2)){
+                    int distance = randomDistance();
+                    if (bidirecional) {
+                        map.getNetwork().addEdge(randomNumber2, randomNumber1, distance);
+                    }
+                    else{
+                        map.getNetwork().addEdgeDiretional(randomNumber1, randomNumber2, distance);
+                    }
+                    count++;
+                }
             }
         }
     }
@@ -86,9 +116,39 @@ public class Game {
     public LinkedList<Player> getPlayers() {
         return players;
     }
+    /*
+     * funçao que recebe o nome de um player e retorna o player
+     */
+    public Player getPlayerByName(String name){
+        for(int i = 0; i < players.size(); i++){
+            if(players.get(i).getName().equals(name)){
+                return players.get(i);
+            }
+        }
+        throw new InputMismatchException("Player not found!");
+    }
 
     public LinkedList<Round> getRounds() {
         return rounds;
     }
-    
+
+    /*
+     * funçao que pede a cada jogador para escolher onde quer colocar a sua bandeira
+     */
+    public void chooseFlags() throws IOException{
+        for(int i = 0; i < players.size(); i++){
+            System.out.println("Player " + players.get(i).getName() + " choose a flag: ");
+            int index = lerInt();
+            if(map.getNetwork().getVertex(index).getFlag() == null){
+                map.getNetwork().getVertex(index).setFlag(players.get(i).getFlag());
+                map.getNetwork().getVertex(index).setHasFlag(true);
+                players.get(i).setFlag(map.getNetwork().getVertex(index).getFlag());
+                players.get(i).getFlag().setIndex(index);
+            }
+            else{
+                System.out.println("This vertex already has a flag!");
+                i--;
+            }
+        }
+    }
 }
