@@ -8,15 +8,22 @@ public class Main {
         Game game = new Game();
 
         //mapa criado
-        /*Falta
+        /*Falta !!!!!!!!!!!!!!!!!!!!!!
         opção para importar mapa por ficheiro
-        decidir o tipo do mapa(bidirecional ou não)
-        decidir densidade das arestas(numero de arestas tem que seguir a regra (N* (N -1)) * 0.5, sendo N o numero de vertices e 0.5 a densidade)
-        */ 
+        */
+        
+        
+        //inicia os dados dos jogadores
+        game.initiatePlayer();
+
+        //cria mapa
         game.createMap();
         System.out.println(game.getMap().getNetwork().toString());
+
+        //escolher bandeiras
+        game.chooseFlags();
+        System.out.println(game.getPlayerByName("r").getFlag().getIndex());
         /*
-         * escolher bandeira
          * 
          * escolher numero de bots
          * 

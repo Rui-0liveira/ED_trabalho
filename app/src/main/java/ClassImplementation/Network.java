@@ -66,7 +66,7 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
         result += "index\tweight\n\n";
 
         for (int i = 0; i < numVertices; i++) {
-            for (int j = numVertices - 1; j > i; j--) {
+            for (int j = numVertices - 1; j >=0; j--) {
                 if (adjMatrix[i][j] < Double.POSITIVE_INFINITY) {
                     result += i + " to " + j + "\t";
                     result += adjMatrix[i][j] + "\n";
@@ -81,6 +81,15 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
         if (indexIsValid(index1) && indexIsValid(index2)) {
             adjMatrix[index1][index2] = weight;
             adjMatrix[index2][index1] = weight;
+            System.out.println("Edge added between " + index1 + " and " + index2 + " with weight " + weight);
+        }else{
+            System.out.println("Edge not added");
+        }
+    }
+
+    public void addEdgeDiretional(int index1, int index2, double weight) {
+        if (indexIsValid(index1) && indexIsValid(index2)) {
+            adjMatrix[index1][index2] = weight;
             System.out.println("Edge added between " + index1 + " and " + index2 + " with weight " + weight);
         }else{
             System.out.println("Edge not added");
@@ -471,6 +480,6 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
     }
 
     public boolean hasEdge(int startIndex, int targetIndex){
-        return adjMatrix[startIndex][targetIndex] > 0;
+        return adjMatrix[startIndex][targetIndex] < Double.POSITIVE_INFINITY;
     }
 }
