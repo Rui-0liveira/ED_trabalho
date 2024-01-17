@@ -91,7 +91,13 @@ public class Game {
             }catch(IOException e){
                 System.out.println("Erro na leitura do nome do jogador!");
             }
-            Flag flag = new Flag("RED");
+            Flag flag = new Flag();
+            if(i==1){
+                flag.setColour("RED");
+            }
+            else {
+                flag.setColour("BLUE");
+            }
             Player player = new Player(name, flag);
             players.add(player);
         }
@@ -150,5 +156,47 @@ public class Game {
                 i--;
             }
         }
+    }
+
+    /*funçao que pede ao utilizador o numero de bots que quer ambos os jogadores tem o mesmo numero de bots
+    * percorre cada jogador e adiciona os bots á localizaçao onde cada jogador tem a sua bandeira
+    * so pode haver 1 bot para cada 10 vertices existentes no mapa
+    */
+    public void addBots() throws IOException{
+        System.out.println("Insira o numero de bots: ");
+        int numBots = lerInt();
+        int numVertices = map.getNetwork().size();
+        if(numBots > 1 + (numVertices/10)){
+            System.out.println("Numero de bots invalido!");
+            addBots();
+        }
+        else{
+            for(int i = 0; i < players.size(); i++){
+                for(int j = 0; j < numBots; j++){
+                    map.getNetwork().getVertex(players.get(i).getFlag().getIndex()).addBot(new Bot(players.get(i),j+1));
+                }
+            }
+        }
+    }
+    
+    /*
+     * funçao que tostring do jogo
+     * quando chamada deve mostrar o mapa com as bandeiras e a posiçao dos bots
+     */
+    public String toString(){
+        String str = "";
+        for(int i = 0; i < map.getNetwork().size(); i++){
+            str += "Vertex " + i + ": ";
+            if(map.getNetwork().getVertex(i).getHasFlag()){
+                str += "Flag: " + map.getNetwork().getVertex(i).getFlag().getColour() + " ";
+            }
+            if(map.getNetwork().getVertex(i).getHasBot()){
+                for(int j = 0; j < map.getNetwork().getVertex(i).getBots().size(); j++){
+                    str += "Bot "+ map.getNetwork().getVertex(i).getBots().get(j).getIndex() + "" + map.getNetwork().getVertex(i).getBots().get(j).getPlayer().getFlag().getColour() + "  ";
+                }
+            }
+            str += "\n";
+        }
+        return str;
     }
 }

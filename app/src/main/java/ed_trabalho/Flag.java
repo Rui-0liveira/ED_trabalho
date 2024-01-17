@@ -9,6 +9,10 @@ public class Flag {
         this.colour = colour;
         this.index = -1;
     }
+    public Flag(){
+        this.colour = null;
+        this.index = -1;
+    }
 
     //Getters and Setters
     public String  getColour(){

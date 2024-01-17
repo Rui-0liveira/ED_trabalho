@@ -1,13 +1,22 @@
 package ed_trabalho;
 
 public class Bot{
+    private int index;
     private boolean turn;
     private MovEnum movEnum;
     private Player player;
-    private MovementAlgoritms mov; 
+    private MovementAlgoritms mov;
 
     //Constructors
     public Bot(Player player){
+        this.index = -1;
+        this.turn = false;
+        this.mov = null;
+        this.player = player;
+    }
+
+    public Bot(Player player, int index){
+        this.index = index;
         this.turn = false;
         this.mov = null;
         this.player = player;
@@ -28,6 +37,13 @@ public class Bot{
     }
 
     //Getters and Setters
+    public int getIndex(){
+        return index;
+    }
+    public void setIndex(int index){
+        this.index = index;
+    }
+
     public void setTurn(boolean turn){
         this.turn = turn;
     }

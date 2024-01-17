@@ -23,9 +23,11 @@ public class Main {
         //escolher bandeiras
         game.chooseFlags();
         System.out.println(game.getPlayerByName("r").getFlag().getIndex());
+
+        //por um bot na localizaçao onde esta a bandeira dos dois jogador
+        game.addBots();
+        System.out.println("\n\n\n" + game.toString());
         /*
-         * 
-         * escolher numero de bots
          * 
          * por os algoritmos em cada um dos bots(so se pode repetir algoritmos caso ja tenhamos usado todos)
          * Algoritmos:
