@@ -1,5 +1,6 @@
 package ed_trabalho;
 
+
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -36,6 +37,7 @@ public class Maps{
         network.getVertex(index).setHasFlag(false);
         System.out.println("Flag removed from vertex: " + index);
     }
+
 
     //funçao que devolve um array com todas as localizaçoes
     public Locations[] getLocations(){

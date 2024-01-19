@@ -209,6 +209,16 @@ public class ArrayList<T> implements ListADT<T>, Iterable<T> {
             ArrayList.this.remove(list[this.current]);
         }
     }
+
+    public void add(T element){
+        if (this.rear == this.list.length) {
+            this.expandCapacity();
+        }
+
+        this.list[this.rear] = element;
+        this.rear++;
+        this.modCount++;
+    }
 }
 
 

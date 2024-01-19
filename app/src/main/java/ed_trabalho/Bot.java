@@ -6,6 +6,7 @@ public class Bot{
     private MovEnum movEnum;
     private Player player;
     private MovementAlgoritms mov;
+    private int location;
 
     //Constructors
     public Bot(Player player){
@@ -24,6 +25,7 @@ public class Bot{
 
 
     //Metodo de movimento do bot
+    /* 
     public void move(){
         if(movEnum == MovEnum.SHORTESTPATH){
             mov.shortestPath();
@@ -35,6 +37,7 @@ public class Bot{
             mov.greedyPath();
         }
     }
+    */
 
     //Getters and Setters
     public int getIndex(){
@@ -70,5 +73,9 @@ public class Bot{
 
     public MovementAlgoritms getMov(){
         return mov;
+    }
+
+    public int getLocation(){
+        return location;
     }
 }
