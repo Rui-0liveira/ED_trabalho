@@ -21,6 +21,11 @@ public class MovementAlgoritms {
         return currentVertex;
     }
     
+    private static int getRandomVertex(ArrayList<Integer> vertices) {
+        Random random = new Random();
+        return vertices.find(random.nextInt(vertices.size()));
+    }
+    
 
      
     public static int getGreedyMove(Bot bot, Maps map) {

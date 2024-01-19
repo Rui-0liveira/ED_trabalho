@@ -13,7 +13,7 @@ public class Main {
         System.out.println("Insira 1 para importar map ou 2 para criar um novo");
         int op = game.lerInt();
         if(op == 1){
-            game.getMap().importMap("C:\\Users\\Rui\\Documents\\GitHub\\ED_trabalho\\app\\map.json");
+            game.getMap().importMap("map.json");
         }
         else if(op == 2){
             game.createMap();
