@@ -3,6 +3,7 @@ package ed_trabalho;
 public class MovementAlgoritms {
     public static void shortestPath(){
         //Implementar o algoritmo de busca mais curto para encontrar a bandeira
+        
     }
 
     public static void randomPath(){
