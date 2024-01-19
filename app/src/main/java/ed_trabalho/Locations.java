@@ -25,6 +25,7 @@ public class Locations {
         this.flag = null;
         this.bot = new LinkedList<Bot>();
         this.index = index;
+        contador++;
     }
 
     public boolean isLocationFree(){
@@ -71,6 +72,9 @@ public class Locations {
 
     //funcao que devolve o bot que esta na localizaçao
     public Bot getBot(){
+        if(bot.size() == 0){
+            return null;
+        }
         return bot.getFirst();
     }
 
@@ -79,5 +83,13 @@ public class Locations {
     public void addBot(Bot bot){
         this.bot.add(bot);
         this.hasBot = true;
+    }
+
+    //funçao remove bot
+    public void removeBot(Bot bot){
+        this.bot.remove(bot);
+        if(this.bot.size() == 0){
+            this.hasBot = false;
+        }
     }
 }

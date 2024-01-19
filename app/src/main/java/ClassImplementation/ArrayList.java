@@ -155,6 +155,15 @@ public class ArrayList<T> implements ListADT<T>, Iterable<T> {
         return result;
     }
 
+    //função get para obter um elemento da lista sabem o indice
+    public T get(int index) {
+        if (index < 0 || index >= this.rear) {
+            throw new IndexOutOfBoundsException("index out of bounds");
+        }
+
+        return this.list[index];
+    }
+
     public String toString() {
         String result = "";
 

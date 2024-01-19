@@ -53,4 +53,13 @@ public class Player {
     public void setFlag(Flag flag){
         this.flag = flag;
     }
+    //funçao que devolve o bot que tem o turn a true
+    public Bot getBotTurn(){
+        for(int i = 0; i < this.bots.size(); i++){
+            if(this.bots.get(i).getTurn()){
+                return this.bots.get(i);
+            }
+        }
+        return this.bots.get(0);
+    }
 }
