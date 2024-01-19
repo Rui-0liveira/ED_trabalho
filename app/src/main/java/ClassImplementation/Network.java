@@ -80,16 +80,6 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
     public void addEdge(int index1, int index2, double weight) {
         if (indexIsValid(index1) && indexIsValid(index2)) {
             adjMatrix[index1][index2] = weight;
-            adjMatrix[index2][index1] = weight;
-            System.out.println("Edge added between " + index1 + " and " + index2 + " with weight " + weight);
-        }else{
-            System.out.println("Edge not added");
-        }
-    }
-
-    public void addEdgeDiretional(int index1, int index2, double weight) {
-        if (indexIsValid(index1) && indexIsValid(index2)) {
-            adjMatrix[index1][index2] = weight;
             System.out.println("Edge added between " + index1 + " and " + index2 + " with weight " + weight);
         }else{
             System.out.println("Edge not added");

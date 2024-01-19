@@ -6,27 +6,35 @@ public class Main {
     public static void main(String[] args) throws NumberFormatException, IOException {
         
         Game game = new Game();
-
-        //mapa criado
-        /*Falta !!!!!!!!!!!!!!!!!!!!!!
-        opção para importar mapa por ficheiro
-        */
         
         
         //inicia os dados dos jogadores
         game.initiatePlayer();
-
-        //cria mapa
-        game.createMap();
+        System.out.println("Insira 1 para importar map ou 2 para criar um novo");
+        int op = game.lerInt();
+        if(op == 1){
+            game.getMap().importMap("C:\\Users\\Rui\\Documents\\GitHub\\ED_trabalho\\app\\map.json");
+        }
+        else if(op == 2){
+            game.createMap();
+            game.getMap().exportMap();
+        }
+        else{
+            System.out.println("Opçao invalida");
+        }
+        
+        
         System.out.println(game.getMap().getNetwork().toString());
 
         //escolher bandeiras
         game.chooseFlags();
-        System.out.println(game.getPlayerByName("r").getFlag().getIndex());
+
 
         //por um bot na localizaçao onde esta a bandeira dos dois jogador
         game.addBots();
         System.out.println("\n\n\n" + game.toString());
+        
+        
         /*
          * 
          * por os algoritmos em cada um dos bots(so se pode repetir algoritmos caso ja tenhamos usado todos)

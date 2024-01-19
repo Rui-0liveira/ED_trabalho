@@ -6,8 +6,6 @@ import ClassImplementation.ArrayList;
 
 public class MovementAlgoritms {
 
-    /*
-    */
     public static void shortestPath(Bot bot, Maps map){}
 
    
