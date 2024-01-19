@@ -23,7 +23,6 @@ public class Main {
             System.out.println("Opçao invalida");
         }
         
-        
         System.out.println(game.getMap().getNetwork().toString());
 
         //escolher bandeiras
@@ -34,6 +33,16 @@ public class Main {
         game.addBots();
         System.out.println("\n\n\n" + game.toString());
         
+        //game.getPlayerByName("Rui").getBotTurn().getMov();
+        for(int i=0; i<10; i++){
+            int novo = MovementAlgoritms.moveRandomly(game.getPlayerByName("r").getBotTurn(), game.getMap());
+            System.out.println(novo);
+            game.getMap().getLocations()[novo].addBot(game.getPlayerByName("r").getBotTurn());
+            game.getMap().getLocations()[game.getPlayerByName("r").getBotTurn().getLocation()].removeBot(game.getPlayerByName("r").getBotTurn());
+            game.getPlayerByName("r").getBotTurn().setLocation(novo);
+            System.out.println(game.getPlayerByName("r").getBotTurn().getLocation());
+            System.out.println(game.toString());
+        }
         
         /*
          * 
