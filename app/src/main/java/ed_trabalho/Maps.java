@@ -1,13 +1,15 @@
 package ed_trabalho;
 
+import java.util.List;
 import java.util.Random;
 
+import ClassImplementation.ArrayList;
 import ClassImplementation.Network;
 
-public class Map{
+public class Maps{
     private Network<Locations> network;
 
-    public Map(){
+    public Maps(){
         this.network = new Network<Locations>();
     }
 
@@ -39,6 +41,14 @@ public class Map{
 
     public void exportMap(){
 
+    }
+
+    public boolean isVertexEmpty(Locations local){
+        if(local.getHasBot() == true){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     //Getters

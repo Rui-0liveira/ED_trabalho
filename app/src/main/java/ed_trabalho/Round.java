@@ -5,11 +5,11 @@ import ClassImplementation.LinkedList;
 public class Round {
     private LinkedList<Player> players;
     private int numBots;
-    private Map map;
+    private Maps map;
     private LinkedList<Bot> bots;
 
     //Constructors
-    public Round(LinkedList<Player> players, int numBots, Map map){
+    public Round(LinkedList<Player> players, int numBots, Maps map){
         this.players = players;
         this.numBots = numBots;
         this.map = map;
@@ -33,7 +33,7 @@ public class Round {
     public int getNumBots(){
         return numBots;
     }
-    public Map getMap(){
+    public Maps getMap(){
         return map;
     }
     public void setPlayers(LinkedList<Player> players){
@@ -42,7 +42,7 @@ public class Round {
     public void setNumBots(int numBots){
         this.numBots = numBots;
     }
-    public void setMap(Map map){
+    public void setMap(Maps map){
         this.map = map;
     }
     public void setBots(LinkedList<Bot> bots){

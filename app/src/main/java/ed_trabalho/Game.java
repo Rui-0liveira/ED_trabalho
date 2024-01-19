@@ -13,12 +13,12 @@ import org.checkerframework.checker.units.qual.t;
 import java.util.InputMismatchException;
 
 public class Game {
-    private Map map;
+    private Maps map;
     private LinkedList<Player> players;
     private LinkedList<Round> rounds;
 
     public Game(){
-        this.map = new Map();
+        this.map = new Maps();
         this.players = new LinkedList<Player>();
         this.rounds = new LinkedList<Round>();
     }
@@ -115,7 +115,7 @@ public class Game {
         return randomNumber;
     }
 
-    public Map getMap() {
+    public Maps getMap() {
         return map;
     }
 
