@@ -47,6 +47,9 @@ public class Maps{
         }
         return locations;
     }
+    public Locations getLocation(int index){
+        return network.getVertex(index);
+    }
 
 
     public void importMap(String file) {

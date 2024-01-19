@@ -11,7 +11,8 @@ public class MovementAlgoritms {
    
     public static int moveRandomly(Bot bot, Maps map) {
         int currentVertex = bot.getLocation();
-        ArrayList<Integer> availableVertices = findAvailableVertices(currentVertex, map.getNetwork().getAdjMatrix());
+
+        ArrayList<Integer> availableVertices = findAvailableVertices(currentVertex, map);
 
         if (!availableVertices.isEmpty()) {
             int newVertex = getRandomVertex(availableVertices);
@@ -29,7 +30,7 @@ public class MovementAlgoritms {
      
     public static int getGreedyMove(Bot bot, Maps map) {
         int currentVertex = bot.getLocation();
-        ArrayList<Integer> availableVertices = findAvailableVertices(currentVertex, map.getNetwork().getAdjMatrix());
+        ArrayList<Integer> availableVertices = findAvailableVertices(currentVertex, map);
 
         if (!availableVertices.isEmpty()) {
             return getClosestVertex(bot, availableVertices, map.getNetwork().getAdjMatrix());
@@ -57,7 +58,7 @@ public class MovementAlgoritms {
 
     public static int getDumbMove(Bot bot, Maps map) {
         int currentVertex = bot.getLocation();
-        ArrayList<Integer> availableVertices = findAvailableVertices(currentVertex, map.getNetwork().getAdjMatrix());
+        ArrayList<Integer> availableVertices = findAvailableVertices(currentVertex, map);
 
         if (!availableVertices.isEmpty()) {
             return getLongestVertex(bot, availableVertices, map.getNetwork().getAdjMatrix());
@@ -83,12 +84,12 @@ public class MovementAlgoritms {
 
 
 
-    private static ArrayList<Integer> findAvailableVertices(int currentVertex, double[][] adjacencyMatrix) {
+    private static ArrayList<Integer> findAvailableVertices(int currentVertex, Maps map) {
         ArrayList<Integer> availableVertices = new ArrayList<>();
-        for (int i = 0; i < adjacencyMatrix.length; i++) {
-            if (adjacencyMatrix[currentVertex][i] == 1.0) { 
+        for (int i = 0; i < map.getNetwork().getAdjMatrix().length; i++) {
+            if (map.getNetwork().getAdjMatrix()[currentVertex][i] > 0 && map.getNetwork().getAdjMatrix()[currentVertex][i] < 16) { 
 
-                if (!isVertexOccupied(i)) {
+                if (!isVertexOccupied(map.getLocations()[i])) {
                     availableVertices.add(i);
                 }
             }
@@ -96,7 +97,15 @@ public class MovementAlgoritms {
         return availableVertices;
     }
 
-    private static boolean isVertexOccupied(int vertex) {
-        return false;
+    private static int getRandomVertex(ArrayList<Integer> vertices) {
+        Random random = new Random();
+        return vertices.get(random.nextInt(vertices.size()));
+    }
+
+    private static boolean isVertexOccupied(Locations location) {
+        if(location.getBot() != null)
+            return true;
+        else
+            return false;
     }
 }

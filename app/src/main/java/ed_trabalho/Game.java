@@ -136,10 +136,10 @@ public class Game {
                 i--;
             }
             else{
-                if(map.getNetwork().getVertex(index).getFlag() == null){
-                    map.getNetwork().getVertex(index).setFlag(players.get(i).getFlag());
-                    map.getNetwork().getVertex(index).setHasFlag(true);
-                    players.get(i).setFlag(map.getNetwork().getVertex(index).getFlag());
+                if(map.getLocation(index).getFlag() == null){
+                    map.getLocation(index).setFlag(players.get(i).getFlag());
+                    map.getLocation(index).setHasFlag(true);
+                    players.get(i).setFlag(map.getLocation(index).getFlag());
                     players.get(i).getFlag().setIndex(index);
                 }
                 else{
@@ -162,7 +162,8 @@ public class Game {
         else{
             for(int i = 0; i < players.size(); i++){
                 for(int j = 0; j < numBots; j++){
-                    map.getNetwork().getVertex(players.get(i).getFlag().getIndex()).addBot(new Bot(players.get(i),j+1));
+                    map.getNetwork().getVertex(players.get(i).getFlag().getIndex()).addBot(new Bot(players.get(i),players.get(i).getFlag().getIndex()));
+                    this.players.get(i).addBot(new Bot(players.get(i),players.get(i).getFlag().getIndex()));
                 }
             }
         }
@@ -173,12 +174,12 @@ public class Game {
         String str = "";
         for(int i = 0; i < map.getNetwork().size(); i++){
             str += "Vertex " + i + ": ";
-            if(map.getNetwork().getVertex(i).getHasFlag()){
-                str += "Flag: " + map.getNetwork().getVertex(i).getFlag().getColour() + " ";
+            if(map.getLocations()[i].getHasFlag()){
+                str += "Flag: " + map.getLocations()[i].getFlag().getColour() + " ";
             }
-            if(map.getNetwork().getVertex(i).getHasBot()){
-                for(int j = 0; j < map.getNetwork().getVertex(i).getBots().size(); j++){
-                    str += "Bot "+ map.getNetwork().getVertex(i).getBots().get(j).getIndex() + "" + map.getNetwork().getVertex(i).getBots().get(j).getPlayer().getFlag().getColour() + "  ";
+            if(map.getLocations()[i].getHasBot()){
+                for(int j = 0; j < map.getLocations()[i].getBots().size(); j++){
+                    str += "Bot "+ map.getLocations()[i].getBots().get(j).getIndex() + "" + map.getLocations()[i].getBots().get(j).getPlayer().getFlag().getColour() + "  ";
                 }
             }
             str += "\n";
