@@ -2,7 +2,7 @@ package ed_trabalho;
 
 import java.util.LinkedList;
 
-//nao faz sentido a localização ter mais que um bot la dentro, so faria sentido se fosse a localizaçao da flag
+
 public class Locations {
     private boolean hasFlag;
     private boolean hasBot;
@@ -18,6 +18,13 @@ public class Locations {
         this.bot = new LinkedList<Bot>();
         this.index = contador;
         contador++;
+    }
+    public Locations(int index){
+        this.hasFlag = false;
+        this.hasBot = false;
+        this.flag = null;
+        this.bot = new LinkedList<Bot>();
+        this.index = index;
     }
 
     public boolean isLocationFree(){
@@ -66,7 +73,6 @@ public class Locations {
     public Bot getBot(){
         return bot.getFirst();
     }
-
 
 
     //funçao add bot
