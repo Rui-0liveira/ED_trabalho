@@ -1,6 +1,9 @@
 package ed_trabalho;
 
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.Random;
+
 
 import org.checkerframework.checker.units.qual.Mass;
 
@@ -9,7 +12,23 @@ import ClassImplementation.ArrayList;
 
 public class MovementAlgoritms {
 
-    public static void shortestPath(Bot bot, Maps map){}
+    
+    public static int shortestPath(Bot bot, Maps map, Locations flag){
+        int startIndex = bot.getLocation();
+        int targetIndex = flag.getIndex();
+        Iterator<Locations> iterator = map.getNetwork().iteratorShortestPath(startIndex, targetIndex);
+
+        while (iterator.hasNext()) {
+        Locations nextIndex = iterator.next();
+
+            if (!isVertexOccupied(nextIndex)) {
+                return nextIndex.getIndex();
+            } 
+        }   
+        return startIndex;
+    }
+        
+    
 
    
     public static int moveRandomly(Bot bot, Maps map) {
