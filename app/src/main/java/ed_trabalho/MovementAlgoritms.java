@@ -1,6 +1,9 @@
 package ed_trabalho;
 
 import java.util.Random;
+
+import org.checkerframework.checker.units.qual.Mass;
+
 import ClassImplementation.ArrayList;
 
 
@@ -26,20 +29,20 @@ public class MovementAlgoritms {
         ArrayList<Integer> availableVertices = findAvailableVertices(currentVertex, map);
 
         if (!availableVertices.isEmpty()) {
-            return getClosestVertex(bot, availableVertices, map.getNetwork().getAdjMatrix());
+            return getClosestVertex(bot, availableVertices, map);
         } else {
             return currentVertex;
         }
     }
 
-    private static int getClosestVertex(Bot bot, ArrayList<Integer> availableVertices, double[][] adjacencyMatrix) {
+    private static int getClosestVertex(Bot bot, ArrayList<Integer> availableVertices, Maps map) {
         int currentVertex = bot.getLocation();
         int closestVertex = -1;
         double minDistance = Double.MAX_VALUE;
 
         for (int neighbor : availableVertices) {
-            if (adjacencyMatrix[currentVertex][neighbor] < minDistance) {
-                minDistance = adjacencyMatrix[currentVertex][neighbor];
+            if (map.getNetwork().getAdjMatrix()[currentVertex][neighbor] < minDistance) {
+                minDistance = map.getNetwork().getAdjMatrix()[currentVertex][neighbor];
                 closestVertex = neighbor;
             }
         }
@@ -54,20 +57,20 @@ public class MovementAlgoritms {
         ArrayList<Integer> availableVertices = findAvailableVertices(currentVertex, map);
 
         if (!availableVertices.isEmpty()) {
-            return getLongestVertex(bot, availableVertices, map.getNetwork().getAdjMatrix());
+            return getLongestVertex(bot, availableVertices, map);
         } else {
             return currentVertex;
         }
     }
 
-    private static int getLongestVertex(Bot bot, ArrayList<Integer> availableVertices, double[][] adjacencyMatrix) {
+    private static int getLongestVertex(Bot bot, ArrayList<Integer> availableVertices, Maps map) {
         int currentVertex = bot.getLocation();
         int longestVertex = -1;
         double maxDistance = Double.MIN_VALUE;
 
         for (int neighbor : availableVertices) {
-            if (adjacencyMatrix[currentVertex][neighbor] > maxDistance) {
-                maxDistance = adjacencyMatrix[currentVertex][neighbor];
+            if (map.getNetwork().getAdjMatrix()[currentVertex][neighbor] > maxDistance) {
+                maxDistance = map.getNetwork().getAdjMatrix()[currentVertex][neighbor];
                 longestVertex = neighbor;
             }
         }
@@ -101,5 +104,4 @@ public class MovementAlgoritms {
         else
             return false;
     }
-    
 }
