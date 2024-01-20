@@ -60,6 +60,13 @@ public class Player {
                 return this.bots.get(i);
             }
         }
-        return this.bots.get(0);
+        return null;
+    }
+
+    //funcao que passa o turno a true de todos os bots
+    public void setTurnTrue(){
+        for(int i = 0; i < this.bots.size(); i++){
+            this.bots.get(i).setTurn(true);
+        }
     }
 }

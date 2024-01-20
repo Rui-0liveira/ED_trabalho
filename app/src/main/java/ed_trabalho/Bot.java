@@ -7,17 +7,16 @@ public class Bot{
     private Player player;
     private MovementAlgoritms mov;
     private int location;
-
     //Constructors
-    public Bot(Player player){
-        this.index = -1;
+    public Bot(Player player, int index){
+        this.index = index;
         this.turn = true;
         this.mov = null;
         this.player = player;
     }
 
-    public Bot(Player player, int location){
-        this.index = -1;
+    public Bot(Player player, int location, int index){
+        this.index = index;
         this.turn = true;
         this.mov = null;
         this.player = player;
@@ -83,4 +82,5 @@ public class Bot{
     public void setLocation(int location){
         this.location = location;
     }
+     
 }

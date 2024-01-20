@@ -12,12 +12,10 @@ import java.util.InputMismatchException;
 public class Game {
     private Maps map;
     private LinkedList<Player> players;
-    private LinkedList<Round> rounds;
 
     public Game(){
         this.map = new Maps();
         this.players = new LinkedList<Player>();
-        this.rounds = new LinkedList<Round>();
     }
 
     public void createMap() throws NumberFormatException, IOException{
@@ -122,9 +120,6 @@ public class Game {
         throw new InputMismatchException("Player not found!");
     }
 
-    public LinkedList<Round> getRounds() {
-        return rounds;
-    }
 
 
     public void chooseFlags() throws IOException{
@@ -162,13 +157,103 @@ public class Game {
         else{
             for(int i = 0; i < players.size(); i++){
                 for(int j = 0; j < numBots; j++){
-                    map.getNetwork().getVertex(players.get(i).getFlag().getIndex()).addBot(new Bot(players.get(i),players.get(i).getFlag().getIndex()));
-                    this.players.get(i).addBot(new Bot(players.get(i),players.get(i).getFlag().getIndex()));
+                    Bot bot = new Bot(players.get(i), players.get(i).getFlag().getIndex(),j+1);
+                    map.getLocation(players.get(i).getFlag().getIndex()).addBot(bot);
+                    this.players.get(i).addBot(bot);
                 }
             }
         }
     }
     
+    
+    public void play(Player player) throws IOException{
+
+        int mov = movBot(player.getBotTurn());
+        if(mov == -1){
+            System.out.println("Algoritmo invalido");
+        }
+        if(mov != player.getBotTurn().getLocation()){
+            getMap().getLocation(mov).addBot(player.getBotTurn());
+            getMap().getLocation(player.getBotTurn().getLocation()).removeBot(player.getBotTurn());
+            player.getBotTurn().setLocation(mov);
+            player.getBotTurn().setTurn(false);
+            if(player.getBotTurn() == null){
+                player.setTurnTrue();
+            }
+        }
+        else{
+            System.out.println("mesmo sitio");
+        }
+    }
+
+    //funçao movBot que recebe bot e devolve o movimento que vai fazer consuante o algoritmo que ele escolheu
+    public int movBot(Bot bot){
+        if(bot.getMovEnum().equals(MovEnum.SHORTESTPATH)){
+            return bot.getLocation();//MovementAlgoritms.shortestPath(bot, getMap());
+        }
+        else if(bot.getMovEnum().equals(MovEnum.RANDOMPATH)){
+            return MovementAlgoritms.moveRandomly(bot, getMap());
+        }
+        else if(bot.getMovEnum().equals(MovEnum.GREEDYPATH)){
+            return MovementAlgoritms.getGreedyMove(bot, getMap());
+        }
+        else if(bot.getMovEnum().equals(MovEnum.DUMBPATH)){
+            return MovementAlgoritms.getDumbMove(bot, getMap());
+        }
+        else{
+            return -1;
+        }
+    }
+    
+
+    //funçao que verifica se tem um bot na localizaçao da bandeira do jogador
+    public boolean Win(Bot bot){
+        for(int i = 0; i < players.size(); i++){
+            if(players.get(i) != bot.getPlayer()){
+                if(players.get(i).getFlag().getIndex() == bot.getLocation()){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    
+    //funçao para o player escolher o algoritmo utilizado pelo bot
+    public void chooseAlgoritms() throws IOException{
+        System.out.println("Algoritms: ");
+        System.out.println("1 - Shortest Path");
+        System.out.println("2 - Random Path");
+        System.out.println("3 - Greedy Path");
+        System.out.println("4 - Dumb Path");
+        for(int i = 0; i < players.size(); i++){
+            System.out.println("Player " + players.get(i).getName() + " choose a algoritms: ");
+            choice(players.get(i));
+        }
+    }
+
+    public void choice(Player player) throws IOException{
+        for(int j = 0; j < player.getBots().size(); j++){
+            System.out.println("Bot " + player.getBots().get(j).getIndex() +  ": ");
+            int index = lerInt();
+            if(index == 1){
+                player.getBots().get(j).setMov( MovEnum.SHORTESTPATH);
+            }
+            else if(index == 2){
+                player.getBots().get(j).setMov(MovEnum.RANDOMPATH);
+            }
+            else if(index == 3){
+                player.getBots().get(j).setMov(MovEnum.GREEDYPATH);
+            }
+            else if(index == 4){
+                player.getBots().get(j).setMov(MovEnum.DUMBPATH);
+            }
+            else{
+                System.out.println("Invalid index!");
+                j--;
+            }
+        }
+    }
+
 
     public String toString(){
         String str = "";
@@ -179,7 +264,7 @@ public class Game {
             }
             if(map.getLocations()[i].getHasBot()){
                 for(int j = 0; j < map.getLocations()[i].getBots().size(); j++){
-                    str += "Bot "+ map.getLocations()[i].getBots().get(j).getIndex() + "" + map.getLocations()[i].getBots().get(j).getPlayer().getFlag().getColour() + "  ";
+                    str += "Bot "+ map.getLocations()[i].getBots().get(j).getIndex()+ "" + map.getLocations()[i].getBots().get(j).getPlayer().getFlag().getColour() + "  ";
                 }
             }
             str += "\n";
