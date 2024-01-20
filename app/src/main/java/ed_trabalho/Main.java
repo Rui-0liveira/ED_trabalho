@@ -1,6 +1,7 @@
 package ed_trabalho;
 
 import java.io.IOException;
+import java.util.Random;
 
 public class Main {
     public static void main(String[] args) throws NumberFormatException, IOException {
@@ -31,29 +32,40 @@ public class Main {
 
         //por um bot na localizaçao onde esta a bandeira dos dois jogador
         game.addBots();
-        System.out.println("\n\n\n" + game.toString());
+        //System.out.println("\n\n\n" + game.toString());
         
-        //game.getPlayerByName("Rui").getBotTurn().getMov();
-        for(int i=0; i<10; i++){
-            int novo = MovementAlgoritms.moveRandomly(game.getPlayerByName("r").getBotTurn(), game.getMap());
-            System.out.println(novo);
-            game.getMap().getLocations()[novo].addBot(game.getPlayerByName("r").getBotTurn());
-            game.getMap().getLocations()[game.getPlayerByName("r").getBotTurn().getLocation()].removeBot(game.getPlayerByName("r").getBotTurn());
-            game.getPlayerByName("r").getBotTurn().setLocation(novo);
-            System.out.println(game.getPlayerByName("r").getBotTurn().getLocation());
-            System.out.println(game.toString());
-        }
+        game.chooseAlgoritms();
+
+
+
+        Random random = new Random();
+        int randomNumber = random.nextInt(2);
+        System.out.println("Player que começa: "+ game.getPlayers().get(randomNumber).getName());
+        int contador=0;
+        do{
+            System.out.println("jogada "+ contador);
+            Bot bot = game.getPlayers().get(randomNumber).getBotTurn();
+            game.play(game.getPlayers().get(randomNumber));
+            
+            if(randomNumber == 1){
+                randomNumber = 0;
+            }
+            else{
+                randomNumber = 1;
+            }
+            System.out.println("Bot "+ bot.getPlayer().getFlag().getColour() + " " + bot.getIndex() + " moveu para " + bot.getLocation());
+            if(game.Win(bot)){
+                System.out.println("Jogador "+ bot.getPlayer().getName() + " ganhou");
+                break;
+            }
+            if(contador == 50){
+                System.out.println("Empate");
+                break;
+            }
+            contador++;
+        }while(true);
+        //print da matriz adjacente
+        System.out.println(game.getMap().getNetwork().printmatriz());
         
-        /*
-         * 
-         * por os algoritmos em cada um dos bots(so se pode repetir algoritmos caso ja tenhamos usado todos)
-         * Algoritmos:
-         * 1-caminho mais curto até a bandeira(nao confundir por aresta mais pequena naquele momento)
-         * 2-?Depht First Search?, aquele da stack ele vai por caminho random até nao conseugir mais e depois volta a traz
-         * 3-
-         * 
-         * 
-         * começar jogo(o 1º a jogar é decidido aleatoriamente)
-         */
     }
 }
