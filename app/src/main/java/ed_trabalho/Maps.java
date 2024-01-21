@@ -38,8 +38,6 @@ public class Maps{
         System.out.println("Flag removed from vertex: " + index);
     }
 
-
-    //funçao que devolve um array com todas as localizaçoes
     public Locations[] getLocations(){
         Locations[] locations = new Locations[network.size()];
         for(int i = 0; i < network.size(); i++){
