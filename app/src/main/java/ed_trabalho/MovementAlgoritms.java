@@ -19,7 +19,7 @@ public class MovementAlgoritms {
         Iterator<Locations> iterator = map.getNetwork().iteratorShortestPath(startIndex, targetIndex);
 
         while (iterator.hasNext()) {
-        Locations nextIndex = iterator.next();
+            Locations nextIndex = iterator.next();
 
             if (!isVertexOccupied(nextIndex)) {
                 return nextIndex.getIndex();

@@ -3,17 +3,19 @@ package ed_trabalho;
 import ClassImplementation.LinkedList;
 
 public class Player {
+    private static int id = 0;
     private String name;
     private int numBots;
     private LinkedList<Bot> bots;
     private Flag flag;
-
+    
     //Constructors
     public Player(String name, Flag flag){
         this.name = name;
         this.numBots = 0;
         this.bots = new LinkedList<Bot>();
         this.flag = flag;
+        this.id++;
     }
 
     //Metodo para adicionar um bot ao jogador
@@ -52,6 +54,9 @@ public class Player {
     }
     public void setFlag(Flag flag){
         this.flag = flag;
+    }
+    public int getId(){
+        return id;
     }
     //funçao que devolve o bot que tem o turn a true
     public Bot getBotTurn(){

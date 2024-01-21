@@ -12,10 +12,12 @@ import java.util.InputMismatchException;
 public class Game {
     private Maps map;
     private LinkedList<Player> players;
+    private Flag[] flags;
 
     public Game(){
         this.map = new Maps();
         this.players = new LinkedList<Player>();
+        this.flags = new Flag[2];
     }
 
     public void createMap() throws NumberFormatException, IOException{
@@ -54,11 +56,11 @@ public class Game {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         try{
             String temp = br.readLine();
-            if(Integer.parseInt(temp)>0){
+            if(Integer.parseInt(temp) >= 0){
                 return Integer.parseInt(temp);
             }
             else{
-                System.out.println("Valor tem que ser acima de 0");
+                System.out.println("Value must be positive!");
                 return lerInt();
             }
         }catch(NumberFormatException e){
@@ -136,6 +138,7 @@ public class Game {
                     map.getLocation(index).setHasFlag(true);
                     players.get(i).setFlag(map.getLocation(index).getFlag());
                     players.get(i).getFlag().setIndex(index);
+                    flags[i] = players.get(i).getFlag();
                 }
                 else{
                     System.out.println("This vertex already has a flag!");
@@ -189,7 +192,14 @@ public class Game {
     //funçao movBot que recebe bot e devolve o movimento que vai fazer consuante o algoritmo que ele escolheu
     public int movBot(Bot bot){
         if(bot.getMovEnum().equals(MovEnum.SHORTESTPATH)){
-            return bot.getLocation();//MovementAlgoritms.shortestPath(bot, getMap());
+            Locations location;
+            if(bot.getPlayer().getId() == 1){
+                location = this.map.getLocation(players.getRear().getElement().getFlag().getIndex());
+            }
+            else{
+                location = this.map.getLocation(players.getFront().getElement().getFlag().getIndex());
+            }
+            return MovementAlgoritms.shortestPath(bot, map, location);
         }
         else if(bot.getMovEnum().equals(MovEnum.RANDOMPATH)){
             return MovementAlgoritms.moveRandomly(bot, getMap());
