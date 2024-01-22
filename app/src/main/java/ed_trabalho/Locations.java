@@ -1,6 +1,6 @@
 package ed_trabalho;
 
-import java.util.LinkedList;
+import ClassImplementation.LinkedList;
 
 
 public class Locations {
@@ -75,7 +75,7 @@ public class Locations {
         if(bot.size() == 0){
             return null;
         }
-        return bot.getFirst();
+        return bot.get(0);
     }
 
 

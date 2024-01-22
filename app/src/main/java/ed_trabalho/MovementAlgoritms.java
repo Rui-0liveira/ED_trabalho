@@ -1,12 +1,7 @@
 package ed_trabalho;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Random;
-
-
-import org.checkerframework.checker.units.qual.Mass;
-
 import ClassImplementation.ArrayList;
 
 
@@ -21,7 +16,7 @@ public class MovementAlgoritms {
         while (iterator.hasNext()) {
             Locations nextIndex = iterator.next();
 
-            if (!isVertexOccupied(nextIndex)) {
+            if (!nextIndex.getHasBot()) {
                 return nextIndex.getIndex();
             } 
         }   
@@ -104,7 +99,7 @@ public class MovementAlgoritms {
         for (int i = 0; i < map.getNetwork().getAdjMatrix().length; i++) {
             if (map.getNetwork().getAdjMatrix()[currentVertex][i] > 0 && map.getNetwork().getAdjMatrix()[currentVertex][i] < 16) { 
 
-                if (!isVertexOccupied(map.getLocations()[i])) {
+                if (!map.getLocations()[i].getHasBot()) {
                     availableVertices.add(i);
                 }
             }
@@ -117,10 +112,4 @@ public class MovementAlgoritms {
         return vertices.get(random.nextInt(vertices.size()));
     }
 
-    private static boolean isVertexOccupied(Locations location) {
-        if(location.getBot() != null)
-            return true;
-        else
-            return false;
-    }
 }
