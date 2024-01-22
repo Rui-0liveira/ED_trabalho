@@ -15,7 +15,7 @@ public class Player {
         this.numBots = 0;
         this.bots = new LinkedList<Bot>();
         this.flag = flag;
-        this.id++;
+        id++;
     }
 
     //Metodo para adicionar um bot ao jogador

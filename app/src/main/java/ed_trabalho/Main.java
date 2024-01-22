@@ -3,14 +3,27 @@ package ed_trabalho;
 import java.io.IOException;
 import java.util.Random;
 
+import GUI.GUI;
+
 public class Main {
     public static void main(String[] args) throws NumberFormatException, IOException {
-        
+        new GUI();
+
+/* 
         Game game = new Game();
         
-        
         //inicia os dados dos jogadores
-        game.initiatePlayer();
+        String name1 = "";
+        String name2 = "";
+        try{
+            System.out.println("Insira o nome do jogador 1: ");
+            name1 = game.ler();
+            System.out.println("Insira o nome do jogador 2: ");
+            name1 = game.ler();
+        }catch(IOException e){
+            System.out.println("Erro na leitura do nome do jogador!");
+        }
+        game.initiatePlayer(name1,name2);
         System.out.println("Insira 1 para importar map ou 2 para criar um novo");
         int op = game.lerInt();
         if(op == 1){
@@ -56,7 +69,7 @@ public class Main {
             }
             System.out.println("Bot " + bot.getIndex() + " moveu para " + bot.getLocation());
             if(game.Win(bot, player)){
-                System.out.println("Bot "+ bot.getIndex() + " ganhou");
+                System.out.println("Bot "+ bot.getIndex() + " " + player.getName()+ " ganhou");
                 break;
             }
             if(contador == 50){
@@ -67,6 +80,8 @@ public class Main {
         }while(true);
         //print da matriz adjacente
         System.out.println(game.getMap().getNetwork().printmatriz());
-        
+
+
+*/
     }
 }
