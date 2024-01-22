@@ -504,4 +504,13 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
     public boolean hasEdge(int startIndex, int targetIndex){
         return adjMatrix[startIndex][targetIndex] < Double.POSITIVE_INFINITY;
     }
+
+    public boolean hasvertex(T vertex){
+        for (int i = 0; i < numVertices; i++) {
+            if (vertex.equals(vertices[i])) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

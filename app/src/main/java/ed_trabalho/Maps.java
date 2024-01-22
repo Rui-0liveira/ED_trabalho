@@ -28,7 +28,7 @@ public class Maps{
 
     public void addFlag(int index, Flag flag){
         network.getVertex(index).setFlag(flag);
-        network.getVertex(index).setHasFlag(false);
+        network.getVertex(index).setHasFlag(true);
         System.out.println("Flag added to vertex: " + index);
     }
 
