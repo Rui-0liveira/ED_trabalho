@@ -1,5 +1,10 @@
 package Interfaces;
 
+/**
+ * @author 8210191 Rodrigo Lopes
+ * @author 8210322 Rui Oliveira
+ */
+
 import Exceptions.EmptyCollectionException;
 
 public interface QueueADT<T> {
