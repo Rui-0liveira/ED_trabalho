@@ -12,12 +12,10 @@ import java.util.InputMismatchException;
 public class Game {
     private Maps map;
     private LinkedList<Player> players;
-    private Flag[] flags;
 
     public Game(){
         this.map = new Maps();
         this.players = new LinkedList<Player>();
-        this.flags = new Flag[2];
     }
 
     public void createMap() throws NumberFormatException, IOException{
@@ -138,7 +136,6 @@ public class Game {
                     map.getLocation(index).setHasFlag(true);
                     players.get(i).setFlag(map.getLocation(index).getFlag());
                     players.get(i).getFlag().setIndex(index);
-                    flags[i] = players.get(i).getFlag();
                 }
                 else{
                     System.out.println("This vertex already has a flag!");
@@ -160,7 +157,7 @@ public class Game {
         else{
             for(int i = 0; i < players.size(); i++){
                 for(int j = 0; j < numBots; j++){
-                    Bot bot = new Bot(players.get(i), players.get(i).getFlag().getIndex(),j+1);
+                    Bot bot = new Bot(players.get(i).getFlag().getIndex(),j+1);
                     map.getLocation(players.get(i).getFlag().getIndex()).addBot(bot);
                     this.players.get(i).addBot(bot);
                 }
@@ -171,7 +168,7 @@ public class Game {
     
     public void play(Player player) throws IOException{
 
-        int mov = movBot(player.getBotTurn());
+        int mov = movBot(player.getBotTurn(), player);
         if(mov == -1){
             System.out.println("Algoritmo invalido");
         }
@@ -190,10 +187,10 @@ public class Game {
     }
 
     //funçao movBot que recebe bot e devolve o movimento que vai fazer consuante o algoritmo que ele escolheu
-    public int movBot(Bot bot){
+    public int movBot(Bot bot, Player player){
         if(bot.getMovEnum().equals(MovEnum.SHORTESTPATH)){
             Locations location;
-            if(bot.getPlayer().getId() == 1){
+            if(player.getId() == 1){
                 location = this.map.getLocation(players.getRear().getElement().getFlag().getIndex());
             }
             else{
@@ -217,9 +214,9 @@ public class Game {
     
 
     //funçao que verifica se tem um bot na localizaçao da bandeira do jogador
-    public boolean Win(Bot bot){
+    public boolean Win(Bot bot, Player player){
         for(int i = 0; i < players.size(); i++){
-            if(players.get(i) != bot.getPlayer()){
+            if(players.get(i) != player){
                 if(players.get(i).getFlag().getIndex() == bot.getLocation()){
                     return true;
                 }
@@ -274,7 +271,7 @@ public class Game {
             }
             if(map.getLocations()[i].getHasBot()){
                 for(int j = 0; j < map.getLocations()[i].getBots().size(); j++){
-                    str += "Bot "+ map.getLocations()[i].getBots().get(j).getIndex()+ "" + map.getLocations()[i].getBots().get(j).getPlayer().getFlag().getColour() + "  ";
+                    str += "Bot "+ map.getLocations()[i].getBots().get(j).getIndex()+ "  ";
                 }
             }
             str += "\n";

@@ -45,6 +45,7 @@ public class Main {
         do{
             System.out.println("jogada "+ contador);
             Bot bot = game.getPlayers().get(randomNumber).getBotTurn();
+            Player player  = game.getPlayers().get(randomNumber);
             game.play(game.getPlayers().get(randomNumber));
             
             if(randomNumber == 1){
@@ -53,9 +54,9 @@ public class Main {
             else{
                 randomNumber = 1;
             }
-            System.out.println("Bot "+ bot.getPlayer().getFlag().getColour() + " " + bot.getIndex() + " moveu para " + bot.getLocation());
-            if(game.Win(bot)){
-                System.out.println("Jogador "+ bot.getPlayer().getName() + " ganhou");
+            System.out.println("Bot " + bot.getIndex() + " moveu para " + bot.getLocation());
+            if(game.Win(bot, player)){
+                System.out.println("Bot "+ bot.getIndex() + " ganhou");
                 break;
             }
             if(contador == 50){
