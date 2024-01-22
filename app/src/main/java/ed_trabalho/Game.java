@@ -18,35 +18,53 @@ public class Game {
         this.players = new LinkedList<Player>();
     }
 
-    public void createMap() throws NumberFormatException, IOException{
-        
-        int numVert = lerInt();
-
-        for(int i = 0; i < numVert; i++){
+    public void createMap(int numVert, float densidade) throws NumberFormatException, IOException{
+        for (int i = 0; i < numVert; i++) {
             Locations newLocation = new Locations();
-            map.addLocal(newLocation);
+            this.map.addLocal(newLocation);
         }
-        
-        float numArestas;
-        System.out.println("Insira a densidade de arestas: ");
-        float densidade = lerInt();
-        float x = densidade/100;
-        numArestas = (numVert * (numVert - 1)) * (x);
-        
-        
+        float numArestas = (numVert * (numVert - 1)) * (densidade / 100);
+
         int count = 0;
-        while(count < numArestas){
+        while (count < numArestas) {
             Random random = new Random();
             int randomNumber1 = random.nextInt(numVert);
             int randomNumber2 = random.nextInt(numVert);
-            if(randomNumber1 != randomNumber2){
-                if(!map.getNetwork().hasEdge(randomNumber1, randomNumber2)){
+            if (randomNumber1 != randomNumber2) {
+                if (!this.map.getNetwork().hasEdge(randomNumber1, randomNumber2)) {
                     int distance = randomDistance();
-                    map.getNetwork().addEdge(randomNumber1, randomNumber2, distance);
+                    this.map.getNetwork().addEdge(randomNumber1, randomNumber2, distance);
                     count++;
                 }
             }
         }
+            /*int numVert = lerInt();
+
+            for(int i = 0; i < numVert; i++){
+                Locations newLocation = new Locations();
+                map.addLocal(newLocation);
+            }
+            
+            float numArestas;
+            System.out.println("Insira a densidade de arestas: ");
+            float densidade = lerInt();
+            float x = densidade/100;
+            numArestas = (numVert * (numVert - 1)) * (x);
+            
+            
+            int count = 0;
+            while(count < numArestas){
+                Random random = new Random();
+                int randomNumber1 = random.nextInt(numVert);
+                int randomNumber2 = random.nextInt(numVert);
+                if(randomNumber1 != randomNumber2){
+                    if(!map.getNetwork().hasEdge(randomNumber1, randomNumber2)){
+                        int distance = randomDistance();
+                        map.getNetwork().addEdge(randomNumber1, randomNumber2, distance);
+                        count++;
+                    }
+                }
+            }*/
     }
 
 
@@ -68,8 +86,18 @@ public class Game {
     }
     
     
-    public void initiatePlayer(){
-        for(int i = 0; i < 2; i++){
+    public void initiatePlayer(String name1, String name2){
+        //cria os dois jogadores
+        Flag flag1 = new Flag();
+        flag1.setColour("BLUE");
+        Flag flag2 = new Flag();
+        flag2.setColour("RED");
+        Player player1 = new Player(name1, flag1);
+        Player player2 = new Player(name2, flag2);
+        players.add(player1);
+        players.add(player2);
+        System.out.println(name1 + " " + name2);
+        /*for(int i = 0; i < 2; i++){
             System.out.println("Insira o nome do jogador " + (i + 1) + ": ");
             String name = "";
             try{
@@ -86,7 +114,7 @@ public class Game {
             }
             Player player = new Player(name, flag);
             players.add(player);
-        }
+        }*/
     }
 
     //da para inserir so enters (nao pode)
@@ -122,8 +150,28 @@ public class Game {
 
 
 
-    public void chooseFlags() throws IOException{
-        for(int i = 0; i < players.size(); i++){
+    public int chooseFlags(int flag1, int flag2) throws IOException{
+        if (flag1<0 || flag2<0) {
+            return -1;
+        }
+        if(flag1 >= map.getNetwork().size() || flag2 >= map.getNetwork().size()){
+            return -1;
+        }
+        else if(flag1 == flag2){
+            return 0;
+        } 
+        else{
+            map.getLocation(flag1).setFlag(players.get(0).getFlag());
+            map.getLocation(flag1).setHasFlag(true);
+            players.get(0).setFlag(map.getLocation(flag1).getFlag());
+            players.get(0).getFlag().setIndex(flag1);
+            map.getLocation(flag2).setFlag(players.get(1).getFlag());
+            map.getLocation(flag2).setHasFlag(true);
+            players.get(1).setFlag(map.getLocation(flag2).getFlag());
+            players.get(1).getFlag().setIndex(flag2);
+            return 1;
+        }
+        /*for(int i = 0; i < players.size(); i++){
             System.out.println("Player " + players.get(i).getName() + " choose a flag: ");
             int index = lerInt();
             if(index >= map.getNetwork().size()){
@@ -142,7 +190,7 @@ public class Game {
                     i--;
                 }
             }
-        }
+        }*/
     }
 
 
@@ -271,7 +319,7 @@ public class Game {
             }
             if(map.getLocations()[i].getHasBot()){
                 for(int j = 0; j < map.getLocations()[i].getBots().size(); j++){
-                    str += "Bot "+ map.getLocations()[i].getBots().get(j).getIndex()+ "  ";
+                    str += "Bot "+ map.getLocations()[i].getBots().get(j).getIndex();
                 }
             }
             str += "\n";
