@@ -1,16 +1,71 @@
 package ed_trabalho;
+/**
+ * @author 8210191 Rodrigo Lopes
+ * @author 8210322 Rui Oliveira
+ */
 
 import java.util.Iterator;
 import java.util.Random;
 
 import ClassImplementation.ArrayList;
 
+/**
+ * A classe Player representa um jogador no jogo.
+ * Cada jogador tem um ID, um nome, um número de bots, uma lista de bots e uma bandeira.
+ */
 public class MovementAlgoritms {
 
+    /**
+     * O método moveShortestPath move o bot para a localização da bandeira usando o
+     * caminho mais curto.
+     * Se o bot já está na localização da bandeira, ele permanece no lugar.
+     * Se o próximo vértice no caminho mais curto tem um bot, o bot permanece no
+     * lugar.
+     * Se não há caminho para a bandeira, o método retorna -1.
+     *
+     * @param bot  O bot que está sendo movido.
+     * @param map  O mapa no qual o bot está se movendo.
+     * @param flag A localização da bandeira.
+     * @return O índice do próximo vértice no caminho mais curto, ou o índice atual
+     * do bot se o próximo vértice tem um bot, ou -1 se não há caminho para a bandeira.
+     */
     public static int moveShortestPath(Bot bot, Maps map, Locations flag) {
-        return 1;
+
+        if (bot.getLocation() == flag.getIndex()) {
+            return bot.getLocation();
+        }
+
+        int botVertexIndex = bot.getLocation();
+        int flagVertexIndex = flag.getIndex();
+        Iterator<Integer> pathIterator = map.getNetwork().iteratorShortestPathIndices(botVertexIndex, flagVertexIndex);
+
+        if (pathIterator.hasNext()) {
+            int nextVertexIndex = pathIterator.next();
+
+            if (map.getLocation(nextVertexIndex).getHasBot()) {
+                return bot.getLocation();
+            } else {
+                return nextVertexIndex;
+            }
+        }
+
+        return -1;
     }
 
+    /**
+     * O método moveShortestPath move o bot para a localização da bandeira usando o
+     * caminho mais curto.
+     * Se o bot já está na localização da bandeira, ele permanece no lugar.
+     * Se o próximo vértice no caminho mais curto tem um bot, o bot permanece no
+     * lugar.
+     * Se não há caminho para a bandeira, o método retorna -1.
+     *
+     * @param bot  O bot que está sendo movido.
+     * @param map  O mapa no qual o bot está se movendo.
+     * @param flag A localização da bandeira.
+     * @return O índice do próximo vértice no caminho mais curto, ou o índice atual
+     * do bot se o próximo vértice tem um bot, ou -1 se não há caminho para a bandeira.
+     */
     public static int moveRandomly(Bot bot, Maps map) {
         int currentVertex = bot.getLocation();
 
@@ -23,6 +78,16 @@ public class MovementAlgoritms {
         return currentVertex;
     }
 
+    /**
+     * O método getGreedyMove move o bot para o vértice disponível mais próximo da
+     * bandeira.
+     * Se não houver vértices disponíveis, o método retorna o índice atual do bot.
+     *
+     * @param bot O bot que está sendo movido.
+     * @param map O mapa no qual o bot está se movendo.
+     * @return O índice do vértice mais próximo da bandeira, ou o índice atual do
+     * bot se não houver vértices disponíveis.
+     */
     public static int getGreedyMove(Bot bot, Maps map) {
         int currentVertex = bot.getLocation();
         ArrayList<Integer> availableVertices = findAvailableVertices(currentVertex, map);
@@ -34,6 +99,15 @@ public class MovementAlgoritms {
         }
     }
 
+    /**
+     * O método getClosestVertex retorna o índice do vértice disponível que está
+     * mais próximo da bandeira.
+     *
+     * @param bot O bot que está sendo movido.
+     * @param availableVertices Uma lista de índices de vértices disponíveis.
+     * @param map O mapa no qual o bot está se movendo.
+     * @return O índice do vértice mais próximo da bandeira.
+     */
     private static int getClosestVertex(Bot bot, ArrayList<Integer> availableVertices, Maps map) {
         int currentVertex = bot.getLocation();
         int closestVertex = -1;
@@ -49,6 +123,15 @@ public class MovementAlgoritms {
         return closestVertex;
     }
 
+    /**
+     * O método getDumbMove move o bot para o vértice disponível mais distante.
+     * Se não houver vértices disponíveis, o método retorna o índice atual do bot.
+     *
+     * @param bot O bot que está sendo movido.
+     * @param map O mapa no qual o bot está se movendo.
+     * @return O índice do vértice mais distante, ou o índice atual do bot se não
+     * houver vértices disponíveis.
+     */
     public static int getDumbMove(Bot bot, Maps map) {
         int currentVertex = bot.getLocation();
         ArrayList<Integer> availableVertices = findAvailableVertices(currentVertex, map);
@@ -60,6 +143,15 @@ public class MovementAlgoritms {
         }
     }
 
+    /**
+     * O método getLongestVertex retorna o índice do vértice disponível que está
+     * mais distante.
+     *
+     * @param bot O bot que está sendo movido.
+     * @param availableVertices Uma lista de índices de vértices disponíveis.
+     * @param map O mapa no qual o bot está se movendo.
+     * @return O índice do vértice mais distante.
+     */
     private static int getLongestVertex(Bot bot, ArrayList<Integer> availableVertices, Maps map) {
         int currentVertex = bot.getLocation();
         int longestVertex = -1;
@@ -75,6 +167,16 @@ public class MovementAlgoritms {
         return longestVertex;
     }
 
+    /**
+     * O método findAvailableVertices retorna uma lista de índices de vértices
+     * disponíveis.
+     * Um vértice está disponível se não tem um bot e há uma aresta do vértice atual
+     * do bot para ele.
+     *
+     * @param currentVertex O índice do vértice atual do bot.
+     * @param map  O mapa no qual o bot está se movendo.
+     * @return Uma lista de índices de vértices disponíveis.
+     */
     private static ArrayList<Integer> findAvailableVertices(int currentVertex, Maps map) {
         ArrayList<Integer> availableVertices = new ArrayList<>();
         for (int i = 0; i < map.getNetwork().getAdjMatrix().length; i++) {
@@ -89,6 +191,13 @@ public class MovementAlgoritms {
         return availableVertices;
     }
 
+    /**
+     * O método getRandomVertex retorna um índice de vértice aleatório da lista de
+     * vértices fornecida.
+     *
+     * @param vertices Uma lista de índices de vértices.
+     * @return Um índice de vértice aleatório.
+     */
     private static int getRandomVertex(ArrayList<Integer> vertices) {
         Random random = new Random();
         return vertices.get(random.nextInt(vertices.size()));
