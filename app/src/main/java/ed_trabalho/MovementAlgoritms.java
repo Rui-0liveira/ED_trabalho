@@ -2,30 +2,15 @@ package ed_trabalho;
 
 import java.util.Iterator;
 import java.util.Random;
-import ClassImplementation.ArrayList;
 
+import ClassImplementation.ArrayList;
 
 public class MovementAlgoritms {
 
-    
-    public static int shortestPath(Bot bot, Maps map, Locations flag){
-        int startIndex = bot.getLocation();
-        int targetIndex = flag.getIndex();
-        Iterator<Locations> iterator = map.getNetwork().iteratorShortestPath(startIndex, targetIndex);
-
-        while (iterator.hasNext()) {
-            Locations nextIndex = iterator.next();
-
-            if (!nextIndex.getHasBot()) {
-                return nextIndex.getIndex();
-            } 
-        }   
-        return startIndex;
+    public static int moveShortestPath(Bot bot, Maps map, Locations flag) {
+        return 1;
     }
-        
-    
 
-   
     public static int moveRandomly(Bot bot, Maps map) {
         int currentVertex = bot.getLocation();
 
@@ -37,7 +22,7 @@ public class MovementAlgoritms {
         }
         return currentVertex;
     }
-     
+
     public static int getGreedyMove(Bot bot, Maps map) {
         int currentVertex = bot.getLocation();
         ArrayList<Integer> availableVertices = findAvailableVertices(currentVertex, map);
@@ -63,8 +48,6 @@ public class MovementAlgoritms {
 
         return closestVertex;
     }
-
-
 
     public static int getDumbMove(Bot bot, Maps map) {
         int currentVertex = bot.getLocation();
@@ -92,12 +75,11 @@ public class MovementAlgoritms {
         return longestVertex;
     }
 
-
-
     private static ArrayList<Integer> findAvailableVertices(int currentVertex, Maps map) {
         ArrayList<Integer> availableVertices = new ArrayList<>();
         for (int i = 0; i < map.getNetwork().getAdjMatrix().length; i++) {
-            if (map.getNetwork().getAdjMatrix()[currentVertex][i] > 0 && map.getNetwork().getAdjMatrix()[currentVertex][i] < 16) { 
+            if (map.getNetwork().getAdjMatrix()[currentVertex][i] > 0
+                    && map.getNetwork().getAdjMatrix()[currentVertex][i] < 16) {
 
                 if (!map.getLocations()[i].getHasBot()) {
                     availableVertices.add(i);
