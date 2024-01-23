@@ -1,4 +1,8 @@
 package ed_trabalho;
+/**
+ * @author 8210191 Rodrigo Lopes
+ * @author 8210322 Rui Oliveira
+ */
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -244,7 +248,7 @@ public class Game {
             else{
                 location = this.map.getLocation(players.getFront().getElement().getFlag().getIndex());
             }
-            return MovementAlgoritms.shortestPath(bot, map, location);
+            return MovementAlgoritms.moveShortestPath(bot, map, location);
         }
         else if(bot.getMovEnum().equals(MovEnum.RANDOMPATH)){
             return MovementAlgoritms.moveRandomly(bot, getMap());

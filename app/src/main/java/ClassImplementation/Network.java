@@ -1,11 +1,14 @@
 package ClassImplementation;
 /**
- * @author 8210311 Daniela Moreira
- * @author 8210367 Orlando Pires
+ * @author 8210191 Rodrigo Lopes
+ * @author 8210322 Rui Oliveira
  */
 import Interfaces.NetworkADT;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 public class Network<T> extends Graph<T> implements NetworkADT<T> {
     private double[][] adjMatrix;
@@ -268,7 +271,9 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
         return iteratorBFS(getIndex(startVertex));
     }
 
-    protected Iterator<Integer> iteratorShortestPathIndices(int startIndex, int targetIndex) {
+
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    public Iterator<Integer> iteratorShortestPathIndices(int startIndex, int targetIndex) {
         int index;
         double weight;
         int[] predecessor = new int[numVertices];
@@ -310,6 +315,7 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
             } else {
                 index = getIndexOfAdjVertexWithWeightOf(visited, pathWeight, weight);
                 visited[index] = true;
+                
             }
             for (int i = 0; i < numVertices; i++) {
                 if (!visited[i]) {
@@ -392,7 +398,9 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
     public double shortestPathWeight(T startVertex, T targetVertex) {
         return shortestPathWeight(getIndex(startVertex), getIndex(targetVertex));
     }
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------    
 
+    
     public Network mstNetwork() {
         int x, y;
         int index;

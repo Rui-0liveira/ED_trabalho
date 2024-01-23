@@ -1,4 +1,8 @@
 package GUI;
+/**
+ * @author 8210191 Rodrigo Lopes
+ * @author 8210322 Rui Oliveira
+ */
 
 import javax.swing.*;
 import java.awt.*;
