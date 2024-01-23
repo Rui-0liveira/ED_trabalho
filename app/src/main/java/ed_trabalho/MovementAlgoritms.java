@@ -6,7 +6,6 @@ package ed_trabalho;
  */
 
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Random;
 
 import ClassImplementation.ArrayList;
