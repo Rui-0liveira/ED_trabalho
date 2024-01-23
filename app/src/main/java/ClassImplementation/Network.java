@@ -1,11 +1,14 @@
 package ClassImplementation;
 /**
- * @author 8210311 Daniela Moreira
- * @author 8210367 Orlando Pires
+ * @author 8210191 Rodrigo Lopes
+ * @author 8210322 Rui Oliveira
  */
 import Interfaces.NetworkADT;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 public class Network<T> extends Graph<T> implements NetworkADT<T> {
     private double[][] adjMatrix;
@@ -210,8 +213,6 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
             x = traversalStack.peek();
             found = false;
 
-            //Find a vertex adjacent to x that has not been visited and push it
-            //on the stack
             for (int i = 0; (i < numVertices) && !found; i++) {
                 if ((adjMatrix[x.intValue()][i] < Double.POSITIVE_INFINITY) && !visited[i]) {
                     traversalStack.push(Integer.valueOf(i));
@@ -252,8 +253,6 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
             x = traversalQueue.dequeue();
             resultList.addToRear(vertices[x.intValue()]);
 
-            //Find all vertices adjacent to x that have not been visited and
-            //queue them up
             for (int i = 0; i < numVertices; i++) {
                 if ((adjMatrix[x.intValue()][i] < Double.POSITIVE_INFINITY) && !visited[i]) {
                     traversalQueue.enqueue(Integer.valueOf(i));
@@ -268,7 +267,9 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
         return iteratorBFS(getIndex(startVertex));
     }
 
-    protected Iterator<Integer> iteratorShortestPathIndices(int startIndex, int targetIndex) {
+
+    //-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    public Iterator<Integer> iteratorShortestPathIndices(int startIndex, int targetIndex) {
         int index;
         double weight;
         int[] predecessor = new int[numVertices];
@@ -310,6 +311,7 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
             } else {
                 index = getIndexOfAdjVertexWithWeightOf(visited, pathWeight, weight);
                 visited[index] = true;
+                
             }
             for (int i = 0; i < numVertices; i++) {
                 if (!visited[i]) {
@@ -392,7 +394,9 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
     public double shortestPathWeight(T startVertex, T targetVertex) {
         return shortestPathWeight(getIndex(startVertex), getIndex(targetVertex));
     }
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------    
 
+    
     public Network mstNetwork() {
         int x, y;
         int index;
@@ -509,6 +513,22 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
         for (int i = 0; i < numVertices; i++) {
             if (vertex.equals(vertices[i])) {
                 return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasPath(int vertex1, int vertex2){
+        if (hasEdge(vertex1, vertex2)){
+            return true;
+        }
+        else{
+            for (int i = 0; i < numVertices; i++) {
+                if (hasEdge(vertex1, i)){
+                    if (hasPath(i, vertex2)){
+                        return true;
+                    }
+                }
             }
         }
         return false;
