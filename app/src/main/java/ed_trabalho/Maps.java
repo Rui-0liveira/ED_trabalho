@@ -1,5 +1,8 @@
 package ed_trabalho;
-
+/**
+ * @author 8210191 Rodrigo Lopes
+ * @author 8210322 Rui Oliveira
+ */
 
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -9,66 +12,109 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 import ClassImplementation.Network;
 
-public class Maps{
+/**
+ * A classe Maps representa um mapa do jogo.
+ * Cada mapa tem uma rede de localizações e uma matriz de adjacência.
+ */
+public class Maps {
     private Network<Locations> network;
 
-    public Maps(){
+    /**
+     * Construtor que cria um novo mapa.
+     */
+    public Maps() {
         this.network = new Network<Locations>();
     }
 
-    public void addLocal(Locations local){
+    /**
+     * Adiciona um local ao mapa.
+     *
+     * @param local O local a ser adicionado.
+     */
+    public void addLocal(Locations local) {
         network.addVertex(local);
     }
 
-    public void removeLocal(Locations local){
+    /**
+     * Remove um local do mapa.
+     *
+     * @param local O local a ser removido.
+     */
+    public void removeLocal(Locations local) {
         network.removeVertex(local);
     }
 
-    public void addFlag(int index, Flag flag){
+    /**
+     * Adiciona uma bandeira a um local específico do mapa.
+     *
+     * @param index O índice do local.
+     * @param flag  A bandeira a ser adicionada.
+     */
+    public void addFlag(int index, Flag flag) {
         network.getVertex(index).setFlag(flag);
         network.getVertex(index).setHasFlag(true);
     }
 
-    public void removeFlag(int index){
+    /**
+     * Remove a bandeira de um local específico do mapa.
+     *
+     * @param index O índice do local.
+     */
+    public void removeFlag(int index) {
         network.getVertex(index).setFlag(null);
         network.getVertex(index).setHasFlag(false);
     }
 
-    public Locations[] getLocations(){
+    /**
+     * Retorna todos os locais do mapa.
+     *
+     * @return Um array contendo todos os locais do mapa.
+     */
+    public Locations[] getLocations() {
         Locations[] locations = new Locations[network.size()];
-        for(int i = 0; i < network.size(); i++){
+        for (int i = 0; i < network.size(); i++) {
             locations[i] = network.getVertex(i);
         }
         return locations;
     }
-    public Locations getLocation(int index){
+
+    /**
+     * Retorna um local específico do mapa com base no índice.
+     *
+     * @param index O índice do local.
+     * @return O local correspondente ao índice.
+     */
+    public Locations getLocation(int index) {
         return network.getVertex(index);
     }
 
-
+    /**
+     * Importa um mapa a partir de um arquivo JSON.
+     * O arquivo JSON deve conter um array de vértices e um array de arestas.
+     * Cada vértice deve ter um índice e cada aresta deve ter um vértice de origem, um vértice de destino e um peso.
+     *
+     * @param file O caminho do arquivo JSON.
+     * @throws IOException Se ocorrer um erro ao ler o arquivo.
+     */
     public void importMap(String file) {
         try (FileReader fileReader = new FileReader(file)) {
             JSONTokener tokener = new JSONTokener(fileReader);
             JSONObject json = new JSONObject(tokener);
 
-            // Lê nós do JSON
             JSONArray nodesArray = json.getJSONArray("Locations");
             for (int i = 0; i < nodesArray.length(); i++) {
                 JSONObject nodeJson = nodesArray.getJSONObject(i);
                 int nodeId = nodeJson.getInt("id");
-                // Crie seu objeto Locations e adicione ao grafo
-                Locations location = new Locations(nodeId); // Substitua isso com sua lógica real
+                Locations location = new Locations(nodeId); 
                 this.network.addVertex(location);
             }
 
-            // Lê arestas do JSON
             JSONArray edgesArray = json.getJSONArray("edges");
             for (int i = 0; i < edgesArray.length(); i++) {
                 JSONObject edgeJson = edgesArray.getJSONObject(i);
                 int source = edgeJson.getInt("source");
                 int target = edgeJson.getInt("target");
                 double weight = edgeJson.getDouble("weight");
-                // Adicione a aresta ao grafo
                 this.network.addEdge(source, target, weight);
             }
         } catch (IOException e) {
@@ -76,12 +122,15 @@ public class Maps{
         }
     }
 
-
-
+    /**
+     * Exporta o mapa para um arquivo JSON.
+     * O arquivo JSON contém um array de vértices e um array de arestas.
+     * Cada vértice tem um índice e um array de bots.
+     * Cada aresta tem um vértice de origem, um vértice de destino e um peso.
+     */
     public void exportMap() {
         JSONObject json = new JSONObject();
 
-        // Adiciona nós ao JSON
         JSONArray nodesArray = new JSONArray();
         for (Locations location : getLocations()) {
             JSONObject nodeJson = new JSONObject();
@@ -90,7 +139,6 @@ public class Maps{
         }
         json.put("Locations", nodesArray);
 
-        // Adiciona arestas ao JSON (matriz adjacente)
         JSONArray edgesArray = new JSONArray();
         double[][] adjacencyMatrix = this.network.getAdjMatrix();
         for (int i = 0; i < adjacencyMatrix.length; i++) {
@@ -106,7 +154,6 @@ public class Maps{
         }
         json.put("edges", edgesArray);
 
-        // Escreve o JSON no arquivo
         try (FileWriter file = new FileWriter("map.json")) {
             file.write(json.toString());
         } catch (IOException e) {
@@ -114,8 +161,16 @@ public class Maps{
         }
     }
 
-    //Getters
-    public Network<Locations> getNetwork(){
+    /**
+     * Retorna a rede de localizações deste mapa.
+     *
+     * @return A rede de localizações deste mapa.
+     */
+    public Network<Locations> getNetwork() {
         return network;
+    }
+
+    public boolean hasPath(int startIndex, int endIndex) {
+        return getNetwork().hasPath(startIndex, endIndex);
     }
 }
