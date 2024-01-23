@@ -14,6 +14,7 @@ public class Bot {
     private MovEnum movEnum;
     private MovementAlgoritms mov;
     private int location;
+    private int lastLocation;
 
     /**
      * Construtor para a classe Bot com um índice específico.
@@ -39,6 +40,7 @@ public class Bot {
         this.turn = true;
         this.mov = null;
         this.location = location;
+        this.lastLocation = -1;
     }
 
     /**
@@ -129,5 +131,23 @@ public class Bot {
      */
     public void setLocation(int location){
         this.location = location;
+    }
+
+    /**
+     * Retorna a última localização do bot.
+     *
+     * @return A última localização do bot.
+     */
+    public int getLastLocation(){
+        return lastLocation;
+    }
+
+    /**
+     * Define a última localização do bot.
+     *
+     * @param lastLocation A última localização a ser definida para o bot.
+     */
+    public void setLastLocation(int lastLocation){
+        this.lastLocation = lastLocation;
     }
 }
