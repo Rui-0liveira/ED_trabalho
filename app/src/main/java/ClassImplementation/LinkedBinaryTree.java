@@ -8,8 +8,8 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 /**
- * @author 8210311 Daniela Moreira
- * @author 8210367 Orlando Pires
+ * @author 8210191 Rodrigo Lopes
+ * @author 8210322 Rui Oliveira
  */
 public class LinkedBinaryTree<T> implements BinaryTreeADT<T> {
 

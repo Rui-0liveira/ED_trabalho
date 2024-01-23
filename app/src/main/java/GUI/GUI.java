@@ -1,13 +1,12 @@
 package GUI;
-<<<<<<< Updated upstream
-=======
 /**
  * @author 8210191 Rodrigo Lopes
  * @author 8210322 Rui Oliveira
  */
+
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
->>>>>>> Stashed changes
+
 
 import javax.swing.*;
 import java.awt.*;
