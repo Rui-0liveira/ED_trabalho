@@ -3,6 +3,8 @@ package ed_trabalho;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+
 public class GameTest {
 
     /**
@@ -31,6 +33,27 @@ public class GameTest {
         }
         assertEquals(expectedEdges, actualEdges);
     }
+
+    @Test
+    public void testCreateBiMap(){
+        Game game = new Game();
+        int numVert = 5;
+        float densidade = 50;
+
+        // Cria um grafo bidirecional
+        
+        try {
+            game.createBiMap(numVert, densidade);
+        } catch (Exception e) {
+            fail("createMap threw an exception: " + e.getMessage());
+        }
+        // Verifica se o número correto de vértices foi adicionado
+        assertEquals(numVert, game.getMap().getLocations().length);
+
+        // Verifica se o número correto de arestas foi adicionado
+        float numArestas = (numVert * (numVert - 1)) * (densidade / 50);
+        assertEquals(numArestas/2, game.getMap().getNetwork().getAdjMatrix().length, 0.01); 
+    } 
 
     /**
      * Teste da inicialização dos jogadores

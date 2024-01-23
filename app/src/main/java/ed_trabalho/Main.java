@@ -9,8 +9,13 @@ public class Main {
     public static void main(String[] args) throws NumberFormatException, IOException {
         new GUI();
 
+<<<<<<< Updated upstream
 /* 
         Game game = new Game();
+=======
+ 
+        /*Game game = new Game();
+>>>>>>> Stashed changes
         
         //inicia os dados dos jogadores
         String name1 = "";
@@ -81,7 +86,12 @@ public class Main {
         //print da matriz adjacente
         System.out.println(game.getMap().getNetwork().printmatriz());
 
+<<<<<<< Updated upstream
 
 */
+=======
+*/
+
+>>>>>>> Stashed changes
     }
 }
