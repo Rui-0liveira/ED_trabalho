@@ -10,7 +10,7 @@ public class PlayerTest {
      */
     @Test
     public void testGetBotTurn() {
-        Flag flag = new Flag("BLUE");
+        Flag flag = new Flag(FlagColour.BLUE);
         Player player = new Player("Player1", flag);
         Bot bot1 = new Bot(1);
         Bot bot2 = new Bot(2);
@@ -32,7 +32,7 @@ public class PlayerTest {
      */
     @Test
     public void testSetTurnTrue() {
-        Flag flag = new Flag("BLUE");
+        Flag flag = new Flag(FlagColour.BLUE);
         Player player = new Player("Player1", flag);
         Bot bot1 = new Bot(1);
         Bot bot2 = new Bot(2);

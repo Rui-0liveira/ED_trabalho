@@ -377,7 +377,7 @@ public class GUI {
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-                if(stop==1){
+                if(stop == 1){
                     JPanel algorithmPanel = AlgorithmPanel(temp);
                     cards.add(algorithmPanel, "ALGORITHM_PANEL");
                     cardLayout.show(cards, "ALGORITHM_PANEL");
@@ -460,7 +460,7 @@ public class GUI {
                     vertices[i] = graph.insertVertex(parent, null, i + "\nBot: " + game.getMap().getLocation(i).getBot().getIndex(), x, y, 60, 60, "fillColor=" + fillColor);
                 } else {
                     if(game.getMap().getLocation(i).getHasFlag()){
-                        fillColor = (game.getMap().getLocation(i).getFlag().getColour()=="RED") ? "#FF0000" : "#0000FF";
+                        fillColor = (game.getMap().getLocation(i).getFlag().getColour()==FlagColour.RED) ? "#FF0000" : "#0000FF";
                         vertices[i] = graph.insertVertex(parent, null, i + "\nFlag: " + game.getMap().getLocation(i).getFlag().getColour(), x, y, 60, 60, "fillColor=" + fillColor);
                     }
                     else{
@@ -526,7 +526,6 @@ public class GUI {
                         movimento += mov[1] + " ";
                         movimento += " com peso " + game.getMap().getNetwork().getAdjMatrix()[mov[0]][mov[1]];
                         vez = 1;
-                        
                     }
                     else if(vez==1){
                         mov[0]= game.getPlayers().get(1).getBotTurn().getLocation();
