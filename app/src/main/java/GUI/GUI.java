@@ -21,6 +21,9 @@ public class GUI {
     private JComboBox<String> flagsComboBox1 = new JComboBox<>();
     private JComboBox<String> flagsComboBox2 = new JComboBox<>();
     private int numberofbots;
+    private JComboBox<String> comboBox1; 
+    private JComboBox<String> comboBox2;
+    private JLabel lbplayer;
 
     public GUI() {
         game = new Game();
@@ -48,8 +51,8 @@ public class GUI {
         JPanel botPanel = botPanel();
         cards.add(botPanel, "BOT_PANEL");
 
-        JPanel algorithmPanel = AlgorithmPanel();
-        cards.add(algorithmPanel, "ALGORITHM_PANEL");
+        JPanel gamePanel = gamePanel();
+        cards.add(gamePanel, "GAME_PANEL");
 
         cardLayout.show(cards, "PLAYER_PANEL"); // Mostra a página de inserção de jogadores por padrão
 
@@ -187,23 +190,26 @@ public class GUI {
                 // Converta para String primeiro antes de converter para int
                 int flag1 = Integer.parseInt((String) flagsComboBox1.getSelectedItem());
                 int flag2 = Integer.parseInt((String) flagsComboBox2.getSelectedItem());
-        
+                int op = 0;
                 try {
-                    int op = game.chooseFlags(flag1, flag2);
+                    op = game.chooseFlags(flag1, flag2);
                     if (op == -1) {
                         JOptionPane.showMessageDialog(frame, "Invalid flag location!");
                         cardLayout.show(cards, "FLAGS_PANEL");
                     } else if (op == 0) {
                         JOptionPane.showMessageDialog(frame, "Flags in the same location!");
-                        cardLayout.show(cards, "FLAGS_PANEL");
                     } else if (op == 1) {
                         JOptionPane.showMessageDialog(frame, "Flags chosen successfully!");
                     }
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-        
+                if(op == 1){
                 cardLayout.show(cards, "BOT_PANEL"); // Alterna para a página de seleção de algoritmos
+                }
+                else{
+                    cardLayout.show(cards, "FLAGS_PANEL");
+                }
             }
         });
         
@@ -222,14 +228,12 @@ public class GUI {
         return panel;
     }
     
-    
-
     //funçao para adicionar bots
     private JPanel botPanel(){
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        JLabel lbplayer = new JLabel("Insert the name of bots");
+        JLabel lbplayer = new JLabel("Insert the number of bots");
         JTextField txtplayer = new JTextField(20);
         JButton btn_players = new JButton("Bots");
         btn_players.addActionListener(new ActionListener() {
@@ -237,7 +241,16 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 String name1 = txtplayer.getText();
                 numberofbots = Integer.parseInt(name1);
-                cardLayout.show(cards, "ALGORITHM_PANEL"); // Alterna para a página de seleção de mapa
+                JPanel algorithmPanel = AlgorithmPanel(0);
+                for(int i = 0; i < 2; i++){
+                    for(int j = 0; j < numberofbots; j++){
+                        Bot bot = new Bot(game.getPlayers().get(i).getFlag().getIndex(),j+1);
+                        game.getMap().getLocation(game.getPlayers().get(i).getFlag().getIndex()).addBot(bot);
+                        game.getPlayers().get(i).addBot(bot);
+                    }
+                }
+                cards.add(algorithmPanel, "ALGORITHM_PANEL");
+                cardLayout.show(cards, "ALGORITHM_PANEL");
             }
         });
         
@@ -248,14 +261,66 @@ public class GUI {
         return panel;
     }
 
-    //funçao para escolher o algoritmo para cada bot para cada um dos dois players
-    private JPanel AlgorithmPanel(){
+    private JPanel AlgorithmPanel(int temp) {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BorderLayout());
+    
+        JPanel gridPanel = new JPanel();
+        gridPanel.setLayout(new GridLayout(2, 3));
+    
+        gridPanel.add(new JLabel("Players"));
+        gridPanel.add(new JLabel("Player 1"));
+        gridPanel.add(new JLabel("Player 2"));
+        JLabel label = new JLabel("Bot " + (temp + 1));
+        gridPanel.add(label);
+        JComboBox<String> comboBox1 = new JComboBox<>();
+        JComboBox<String> comboBox2 = new JComboBox<>();
+        comboBox1.addItem("Shortest Path");
+        comboBox1.addItem("Random Path");
+        comboBox1.addItem("Greedy Path");
+        comboBox1.addItem("Dumb Path");
+        comboBox2.addItem("Shortest Path");
+        comboBox2.addItem("Random Path");
+        comboBox2.addItem("Greedy Path");
+        comboBox2.addItem("Dumb Path");
+        gridPanel.add(comboBox1);
+        gridPanel.add(comboBox2);
+    
+        panel.add(gridPanel, BorderLayout.CENTER);
+    
+        JButton btn_bot = new JButton("Algorithms");
+        btn_bot.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int p1 = comboBox1.getSelectedIndex();
+                int p2 = comboBox2.getSelectedIndex();
+                try {
+                    game.chooseAlgoritms(game.getPlayers().get(0), temp, p1 + 1);
+                    game.chooseAlgoritms(game.getPlayers().get(1), temp, p2 + 1);
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+                if (temp != numberofbots - 1) {
+                    JPanel algorithmPanel = AlgorithmPanel(temp + 1);
+                    cards.add(algorithmPanel, "ALGORITHM_PANEL");
+                    cardLayout.show(cards, "ALGORITHM_PANEL");
+                } else {
+                    cardLayout.show(cards, "GAME_PANEL");
+                }
+            }
+        });
+    
+        panel.add(btn_bot, BorderLayout.SOUTH);
+    
+        return panel;
+    }
+
+    private JPanel gamePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        JLabel lbplayer = new JLabel("Choose the algorithm");
-        
-
+        JButton btnStartGame = new JButton("Start Game");
+        panel.add(btnStartGame);
         return panel;
     }
 }
