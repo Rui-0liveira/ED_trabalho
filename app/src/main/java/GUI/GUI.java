@@ -9,17 +9,23 @@ package GUI;
 =======
 
 import com.mxgraph.model.mxCell;
+<<<<<<< Updated upstream
 import com.mxgraph.model.mxGeometry;
 >>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.util.mxPoint;
 import com.mxgraph.view.mxGraph;
+<<<<<<< Updated upstream
 <<<<<<< Updated upstream
 >>>>>>> Stashed changes
 =======
 import com.mxgraph.view.mxStylesheet;
 >>>>>>> Stashed changes
 
+=======
+import com.mxgraph.view.mxStylesheet;
+>>>>>>> Stashed changes
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -33,7 +39,6 @@ import com.mxgraph.util.mxConstants;
 
 /**
  * Classe que implementa a interface gráfica do jogo.
- *
  */
 public class GUI {
 

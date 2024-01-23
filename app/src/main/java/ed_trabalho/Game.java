@@ -230,7 +230,7 @@ public class Game {
         if(mov == -1){
             System.out.println("Algoritmo invalido");
         }
-        if(mov != player.getBotTurn().getIndex()){
+        if(mov != player.getBotTurn().getLocation()){
             Bot bot = player.getBotTurn();
             getMap().getLocation(player.getBotTurn().getLocation()).removeBot(bot);
             getMap().getLocation(player.getBotTurn().getLocation()).setHasBot(false);
