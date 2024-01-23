@@ -23,7 +23,6 @@ dependencies {
     // This dependency is used by the application.
     implementation libs.guava
     implementation files('build/libs/jgraphx.jar')
-    
     implementation group: 'org.json', name: 'json', version: '20231013'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.1'

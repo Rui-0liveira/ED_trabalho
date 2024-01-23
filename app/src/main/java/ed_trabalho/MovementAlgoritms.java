@@ -77,12 +77,16 @@ public class MovementAlgoritms {
      */
     public static int moveRandomly(Bot bot, Maps map) {
         int currentVertex = bot.getLocation();
-
-        ArrayList<Integer> availableVertices = findAvailableVertices(currentVertex, map);
+        int lastLocation = bot.getLastLocation();
+        ArrayList<Integer> availableVertices = findAvailableVertices(currentVertex, map, lastLocation);
 
         if (!availableVertices.isEmpty()) {
             int newVertex = getRandomVertex(availableVertices);
-            return newVertex;
+            if (newVertex == currentVertex) {
+                return moveRandomly(bot, map);
+            } else {
+                return newVertex;
+            }
         }
         return currentVertex;
     }
@@ -99,7 +103,8 @@ public class MovementAlgoritms {
      */
     public static int getGreedyMove(Bot bot, Maps map) {
         int currentVertex = bot.getLocation();
-        ArrayList<Integer> availableVertices = findAvailableVertices(currentVertex, map);
+        int lastVisited = bot.getLastLocation();
+        ArrayList<Integer> availableVertices = findAvailableVertices(currentVertex, map, lastVisited);
 
         if (!availableVertices.isEmpty()) {
             return getClosestVertex(bot, availableVertices, map);
@@ -143,10 +148,13 @@ public class MovementAlgoritms {
      */
     public static int getDumbMove(Bot bot, Maps map) {
         int currentVertex = bot.getLocation();
-        ArrayList<Integer> availableVertices = findAvailableVertices(currentVertex, map);
+        int lastVisited = bot.getLastLocation();
+        ArrayList<Integer> availableVertices = findAvailableVertices(currentVertex, map, lastVisited);
 
         if (!availableVertices.isEmpty()) {
-            return getLongestVertex(bot, availableVertices, map);
+            int nextVertex = getLongestVertex(bot, availableVertices, map);
+            bot.setLastLocation(currentVertex);
+            return nextVertex;
         } else {
             return currentVertex;
         }
@@ -186,13 +194,13 @@ public class MovementAlgoritms {
      * @param map           O mapa no qual o bot está se movendo.
      * @return Uma lista de índices de vértices disponíveis.
      */
-    private static ArrayList<Integer> findAvailableVertices(int currentVertex, Maps map) {
+    private static ArrayList<Integer> findAvailableVertices(int currentVertex, Maps map, int lastLocation) {
         ArrayList<Integer> availableVertices = new ArrayList<>();
         for (int i = 0; i < map.getNetwork().getAdjMatrix().length; i++) {
             if (map.getNetwork().getAdjMatrix()[currentVertex][i] > 0
                     && map.getNetwork().getAdjMatrix()[currentVertex][i] < 16) {
 
-                if (!map.getLocations()[i].getHasBot()) {
+                if (!map.getLocations()[i].getHasBot() && map.getLocations()[i].getIndex() != lastLocation) {
                     availableVertices.add(i);
                 }
             }
