@@ -521,4 +521,20 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
         }
         return false;
     }
+
+    public boolean hasPath(int vertex1, int vertex2){
+        if (hasEdge(vertex1, vertex2)){
+            return true;
+        }
+        else{
+            for (int i = 0; i < numVertices; i++) {
+                if (hasEdge(vertex1, i)){
+                    if (hasPath(i, vertex2)){
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }

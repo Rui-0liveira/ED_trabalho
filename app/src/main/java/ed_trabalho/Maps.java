@@ -176,4 +176,8 @@ public class Maps {
     public Network<Locations> getNetwork() {
         return network;
     }
+
+    public boolean hasPath(int startIndex, int endIndex) {
+        return getNetwork().hasPath(startIndex, endIndex);
+    }
 }

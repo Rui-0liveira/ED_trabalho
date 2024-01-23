@@ -71,6 +71,29 @@ public class Game {
             }*/
     }
 
+    public void createBiMap(int numVert, float densidade) throws NumberFormatException, IOException{
+        for (int i = 0; i < numVert; i++) {
+            Locations newLocation = new Locations();
+            this.map.addLocal(newLocation);
+        }
+        float numArestas = (numVert * (numVert - 1)) * (densidade / 50);
+    
+        int count = 0;
+        while (count < numArestas) {
+            Random random = new Random();
+            int randomNumber1 = random.nextInt(numVert);
+            int randomNumber2 = random.nextInt(numVert);
+            if (randomNumber1 != randomNumber2) {
+                if (!this.map.getNetwork().hasEdge(randomNumber1, randomNumber2)) {
+                    int distance = randomDistance();
+                    this.map.getNetwork().addEdge(randomNumber1, randomNumber2, distance);
+                    this.map.getNetwork().addEdge(randomNumber2, randomNumber1, distance); 
+                    count++;
+                }
+            }
+        }
+    }
+
 
     public int lerInt() throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
