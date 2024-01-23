@@ -4,11 +4,16 @@ package GUI;
  * @author 8210322 Rui Oliveira
  */
 
+import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.view.mxGraph;
+
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Random;
 
 import ed_trabalho.*;
 
@@ -24,6 +29,8 @@ public class GUI {
     private JComboBox<String> comboBox1; 
     private JComboBox<String> comboBox2;
     private JLabel lbplayer;
+    private Random random = new Random();
+    private int vez = random.nextInt(2);
 
     public GUI() {
         game = new Game();
@@ -51,8 +58,8 @@ public class GUI {
         JPanel botPanel = botPanel();
         cards.add(botPanel, "BOT_PANEL");
 
-        JPanel gamePanel = gamePanel();
-        cards.add(gamePanel, "GAME_PANEL");
+        JPanel startPanel = StartPanel();
+        cards.add(startPanel, "START_PANEL");
 
         cardLayout.show(cards, "PLAYER_PANEL"); // Mostra a página de inserção de jogadores por padrão
 
@@ -128,15 +135,25 @@ public class GUI {
     
         JLabel lbDensidade = new JLabel("Density of the graph (0%-100%)");
         JTextField txtDensidade = new JTextField(10);
-    
+        
+        JCheckBox checkBox = new JCheckBox("Bidirectional");
+        checkBox.setSelected(false);
+
+
         JButton btnCriarMapa = new JButton("Create Map");
         btnCriarMapa.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int numVert = Integer.parseInt(txtNumVertices.getText());
                 float densidade = Float.parseFloat(txtDensidade.getText());
+                
                 try {
-                    game.createMap(numVert, densidade);
+                    if (checkBox.isSelected()) {
+                        game.createBiMap(numVert, densidade);
+                    } 
+                    else {
+                        game.createMap(numVert, densidade);
+                    }
                     game.getMap().exportMap();
                     JOptionPane.showMessageDialog(frame, "Map created successfully!");
     
@@ -154,6 +171,7 @@ public class GUI {
         panel.add(txtNumVertices);
         panel.add(lbDensidade);
         panel.add(txtDensidade);
+        panel.add(checkBox);
         panel.add(btnCriarMapa);
     
         return panel;
@@ -305,7 +323,7 @@ public class GUI {
                     cards.add(algorithmPanel, "ALGORITHM_PANEL");
                     cardLayout.show(cards, "ALGORITHM_PANEL");
                 } else {
-                    cardLayout.show(cards, "GAME_PANEL");
+                    cardLayout.show(cards, "START_PANEL");
                 }
             }
         });
@@ -315,12 +333,105 @@ public class GUI {
         return panel;
     }
 
+    private JPanel StartPanel(){
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+    
+        JButton btnStartGame = new JButton("Start Game");
+        btnStartGame.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JPanel gamePanel = gamePanel();
+                    cards.add(gamePanel, "GAME_PANEL");
+                    cardLayout.show(cards, "GAME_PANEL");
+            }
+        });
+        panel.add(btnStartGame);
+        return panel;
+    }
+    
     private JPanel gamePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+    
+        mxGraph graph = new mxGraph();
+        Object parent = graph.getDefaultParent();
+        graph.getModel().beginUpdate();
+        try {
+            Object[] vertices = new Object[game.getMap().getLocations().length];
+            int centerX = 700;
+            int centerY = 400;
+            int radius = game.getMap().getLocations().length * 20;
+    
+            for (int i = 0; i < game.getMap().getLocations().length; i++) {
+                double angle = (2 * Math.PI * i) / game.getMap().getLocations().length;
+                int x = (int) (centerX + radius * Math.cos(angle));
+                int y = (int) (centerY + radius * Math.sin(angle));
+                int playerIndex = -1;
 
-        JButton btnStartGame = new JButton("Start Game");
-        panel.add(btnStartGame);
+                if(game.getMap().getLocation(i).getBot() != null){
+                    for(int j = 0; j < game.getPlayers().size(); j++){
+                        if(game.getPlayers().get(j).getBotTurn() == game.getMap().getLocation(i).getBot()){
+                            playerIndex = j;
+                        }
+                    }
+                }
+
+                String fillColor = (playerIndex == 0) ? "#00FF00" : (playerIndex == 1) ? "#FF0000" : "#FFFFFF";
+    
+                if (game.getMap().getLocation(i).getHasBot()) {
+                    vertices[i] = graph.insertVertex(parent, null, i + "\nBot: " + game.getMap().getLocation(i).getBot().getIndex(), x, y, 60, 60, "fillColor=" + fillColor);
+                } else {
+                    vertices[i] = graph.insertVertex(parent, null, i, x, y, 20, 20, "fillColor=" + fillColor);
+                }
+            }
+    
+            for (int i = 0; i < game.getMap().getLocations().length; i++) {
+                for (int j = 0; j < game.getMap().getLocations().length; j++) {
+                    if (i != j && game.getMap().getNetwork().hasEdge(i, j)) {
+                        graph.insertEdge(parent, null, game.getMap().getNetwork().getAdjMatrix()[i][j], vertices[i], vertices[j]);
+                    }
+                }
+            }
+        } finally {
+            graph.getModel().endUpdate();
+        }
+    
+        mxGraphComponent graphComponent = new mxGraphComponent(graph);
+        panel.removeAll();
+        panel.add(graphComponent);
+    
+        panel.revalidate();
+        panel.repaint();
+    
+        JButton btnproximaronda = new JButton("avançar");
+        btnproximaronda.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                try {
+                    if(vez == 0){
+                        game.play(game.getPlayers().get(0));
+                        vez = 1;
+                    }
+                    else if(vez==1){
+                        game.play(game.getPlayers().get(1));
+                        vez = 0;
+                    }
+                    
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                }
+    
+                JPanel gamePanel = gamePanel();
+                cards.add(gamePanel, "GAME_PANEL");
+                cardLayout.show(cards, "GAME_PANEL");
+            }
+        });
+        btnproximaronda.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btnproximaronda.setAlignmentY(Component.CENTER_ALIGNMENT);
+        btnproximaronda.setMaximumSize(new Dimension(Integer.MAX_VALUE, btnproximaronda.getPreferredSize().height));
+        panel.add(btnproximaronda);
         return panel;
     }
 }

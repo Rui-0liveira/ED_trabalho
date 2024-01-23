@@ -42,34 +42,8 @@ public class Game {
                 }
             }
         }
-            /*int numVert = lerInt();
-
-            for(int i = 0; i < numVert; i++){
-                Locations newLocation = new Locations();
-                map.addLocal(newLocation);
-            }
-            
-            float numArestas;
-            System.out.println("Insira a densidade de arestas: ");
-            float densidade = lerInt();
-            float x = densidade/100;
-            numArestas = (numVert * (numVert - 1)) * (x);
-            
-            
-            int count = 0;
-            while(count < numArestas){
-                Random random = new Random();
-                int randomNumber1 = random.nextInt(numVert);
-                int randomNumber2 = random.nextInt(numVert);
-                if(randomNumber1 != randomNumber2){
-                    if(!map.getNetwork().hasEdge(randomNumber1, randomNumber2)){
-                        int distance = randomDistance();
-                        map.getNetwork().addEdge(randomNumber1, randomNumber2, distance);
-                        count++;
-                    }
-                }
-            }*/
     }
+
 
     public void createBiMap(int numVert, float densidade) throws NumberFormatException, IOException{
         for (int i = 0; i < numVert; i++) {
@@ -79,7 +53,7 @@ public class Game {
         float numArestas = (numVert * (numVert - 1)) * (densidade / 50);
     
         int count = 0;
-        while (count < numArestas) {
+        while (count < numArestas/2) {
             Random random = new Random();
             int randomNumber1 = random.nextInt(numVert);
             int randomNumber2 = random.nextInt(numVert);
@@ -124,24 +98,7 @@ public class Game {
         players.add(player1);
         players.add(player2);
         System.out.println(name1 + " " + name2);
-        /*for(int i = 0; i < 2; i++){
-            System.out.println("Insira o nome do jogador " + (i + 1) + ": ");
-            String name = "";
-            try{
-                name = ler();
-            }catch(IOException e){
-                System.out.println("Erro na leitura do nome do jogador!");
-            }
-            Flag flag = new Flag();
-            if(i==1){
-                flag.setColour("RED");
-            }
-            else {
-                flag.setColour("BLUE");
-            }
-            Player player = new Player(name, flag);
-            players.add(player);
-        }*/
+        
     }
 
     //da para inserir so enters (nao pode)
@@ -198,26 +155,7 @@ public class Game {
             players.get(1).getFlag().setIndex(flag2);
             return 1;
         }
-        /*for(int i = 0; i < players.size(); i++){
-            System.out.println("Player " + players.get(i).getName() + " choose a flag: ");
-            int index = lerInt();
-            if(index >= map.getNetwork().size()){
-                System.out.println("Invalid index!");
-                i--;
-            }
-            else{
-                if(map.getLocation(index).getFlag() == null){
-                    map.getLocation(index).setFlag(players.get(i).getFlag());
-                    map.getLocation(index).setHasFlag(true);
-                    players.get(i).setFlag(map.getLocation(index).getFlag());
-                    players.get(i).getFlag().setIndex(index);
-                }
-                else{
-                    System.out.println("This vertex already has a flag!");
-                    i--;
-                }
-            }
-        }*/
+        
     }
 
 
@@ -239,7 +177,13 @@ public class Game {
             }
         }
     }
-    
+    //funçao que devolve um player á sorte dos dois existentes
+    public Player randomPlayer(){
+        Random random = new Random();
+        int randomNumber = random.nextInt(2);
+        
+        return players.get(randomNumber);
+    }
     
     public void play(Player player) throws IOException{
 
@@ -247,9 +191,12 @@ public class Game {
         if(mov == -1){
             System.out.println("Algoritmo invalido");
         }
-        if(mov != player.getBotTurn().getLocation()){
-            getMap().getLocation(mov).addBot(player.getBotTurn());
-            getMap().getLocation(player.getBotTurn().getLocation()).removeBot(player.getBotTurn());
+        if(mov != player.getBotTurn().getIndex()){
+            Bot bot = player.getBotTurn();
+            getMap().getLocation(player.getBotTurn().getLocation()).removeBot(bot);
+            getMap().getLocation(player.getBotTurn().getLocation()).setHasBot(false);
+            getMap().getLocation(mov).addBot(bot);
+            getMap().getLocation(mov).setHasBot(true);
             player.getBotTurn().setLocation(mov);
             player.getBotTurn().setTurn(false);
             if(player.getBotTurn() == null){
@@ -257,8 +204,10 @@ public class Game {
             }
         }
         else{
+            System.out.println(player.getBotTurn().getMovEnum());
             System.out.println("mesmo sitio");
         }
+        System.out.println(player.getFlag().getColour());
     }
 
     //funçao movBot que recebe bot e devolve o movimento que vai fazer consuante o algoritmo que ele escolheu
@@ -300,7 +249,7 @@ public class Game {
         return false;
     }
 
-    public void chooseAlgoritms(Player player,int index ,int op) throws IOException{
+    public void chooseAlgoritms(Player player, int index, int op) throws IOException{
         if(op == 1){
             player.getBots().get(index).setMov(MovEnum.SHORTESTPATH);
         }
