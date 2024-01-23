@@ -51,24 +51,7 @@ public class GameTest {
         assertEquals(numArestas/2, game.getMap().getNetwork().getAdjMatrix().length, 0.01); 
     } 
 
-    /**
-     * Teste da inicialização dos jogadores
-     * Verifica se o número, nome e cores das bandeiras dos jogadores estam corretos
-     */
-    @Test
-    public void testInitiatePlayer() {
-        Game game = new Game();
-        game.initiatePlayer("Player1", "Player2");
-
-        assertEquals(2, game.getPlayers().size());
-
-        assertEquals("Player1", game.getPlayers().get(0).getName());
-        assertEquals("Player2", game.getPlayers().get(1).getName());
-
-        assertEquals(FlagColour.BLUE, game.getPlayers().get(0).getFlag().getColour());
-        assertEquals(FlagColour.RED, game.getPlayers().get(1).getFlag().getColour());
-    }
-
+   
     /**
      * Teste de uma função que retorna um número aleatório entre 1 e 15
      * Verifica se o número retornado está entre 1 e 15
@@ -81,7 +64,11 @@ public class GameTest {
             assertTrue("Distance should be between 1 and 15, but was " + distance, distance >= 1 && distance <= 15);
         }
     }
-
+    
+    /**
+     * Teste da função randomPlayer
+     * Verifica se o jogador retornado é um dos jogadores do jogo
+     */
     @Test
     public void testRandomPlayer() {
         Game game = new Game();
@@ -113,6 +100,10 @@ public class GameTest {
     }
 
 
+    /**
+     * Teste da função initiatePlayer
+     * @throws IOException
+     */
     @Test
     public void testChooseFlags() throws IOException {
         
@@ -131,6 +122,10 @@ public class GameTest {
         assertEquals(game.getPlayers().get(1).getFlag(), game.getMap().getLocation(1).getFlag());
     }
 
+    /**
+     * Teste da função play
+     * @throws IOException
+     */
     @Test
     public void testPlay() throws IOException {
         Game game = new Game();

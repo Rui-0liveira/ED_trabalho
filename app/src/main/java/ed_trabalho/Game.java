@@ -91,12 +91,9 @@ public class Game {
      * @param name2 nome do jogador 2
      */
     public void initiatePlayer(String name1, String name2){
-        Flag flag1 = new Flag();
-        flag1.setColour(FlagColour.BLUE);
-        Flag flag2 = new Flag();
-        flag2.setColour(FlagColour.RED);
-        Player player1 = new Player(name1, flag1);
-        Player player2 = new Player(name2, flag2);
+        
+        Player player1 = new Player(name1, null);
+        Player player2 = new Player(name2, null);
         players.add(player1);
         players.add(player2);
     }
@@ -175,13 +172,18 @@ public class Game {
             return 0;
         } 
         else{
-            map.getLocation(flag1).setFlag(players.get(0).getFlag());
+            Flag flags1 = new Flag();
+            flags1.setColour(FlagColour.BLUE);
+            Flag flags2 = new Flag();
+            flags2.setColour(FlagColour.RED);
+            map.getLocation(flag1).setFlag(flags1);
             map.getLocation(flag1).setHasFlag(true);
-            players.get(0).setFlag(map.getLocation(flag1).getFlag());
+            players.get(0).setFlag(flags1);
             players.get(0).getFlag().setIndex(flag1);
-            map.getLocation(flag2).setFlag(players.get(1).getFlag());
+
+            map.getLocation(flag2).setFlag(flags2);
             map.getLocation(flag2).setHasFlag(true);
-            players.get(1).setFlag(map.getLocation(flag2).getFlag());
+            players.get(1).setFlag(flags2);
             players.get(1).getFlag().setIndex(flag2);
             return 1;
         }
@@ -226,11 +228,11 @@ public class Game {
     public int movBot(Bot bot, Player player){
         if(bot.getMovEnum().equals(MovEnum.SHORTESTPATH)){
             Locations location;
-            if(player.getId() == 1){
-                location = this.map.getLocation(players.getRear().getElement().getFlag().getIndex());
+            if(whereIsPlayer(player) == 0){
+                location = this.map.getLocation(players.get(1).getFlag().getIndex());
             }
             else{
-                location = this.map.getLocation(players.getFront().getElement().getFlag().getIndex());
+                location = this.map.getLocation(players.get(0).getFlag().getIndex());
             }
             return MovementAlgoritms.moveShortestPath(bot, map, location);
         }
@@ -262,6 +264,19 @@ public class Game {
         return false;
     }
 
+    /**
+     * Função que ve aonde esta o jogador na lista
+     * @param player jogador que vai ser verificado
+     * @return index do jogador na lista
+     */
+    public int whereIsPlayer(Player player){
+        for(int i = 0; i < 2; i++){
+            if(players.get(i) == player){
+                return i;
+            }
+        }
+        return -1;
+    }
 
     /**
      * Função de escolher um algoritmo para um bot

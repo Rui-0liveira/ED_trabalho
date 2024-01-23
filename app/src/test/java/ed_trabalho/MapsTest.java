@@ -5,21 +5,26 @@ import static org.junit.Assert.*;
 
 public class MapsTest {
     
+    /**
+     * Teste do método addFlag
+     * Verifica se a bandeira foi adicionada corretamente
+     */
     @Test
     public void testAddFlag() {
         Maps maps = new Maps();
         maps.addLocal(new Locations(0));
         Flag flag = new Flag(FlagColour.RED);
 
-        // Adiciona a bandeira a um local
         maps.addFlag(0, flag);
 
-        // Verifica se a bandeira foi adicionada corretamente
         assertEquals(flag, maps.getLocations()[0].getFlag());
         assertTrue(maps.getLocations()[0].getHasFlag());
     }
     
-
+    /**
+     * Teste do método removeFlag
+     * Verifica se a bandeira foi removida corretamente
+     */
     @Test
     public void testRemoveFlag() {
         Maps maps = new Maps();
@@ -37,6 +42,10 @@ public class MapsTest {
         assertFalse(maps.getLocations()[0].getHasFlag());
     }
     
+    /**
+     * Teste do método getLocations
+     * Verifica se o array de locais é retornado corretamente
+     */
     @Test
     public void testGetLocations() {
         Maps maps = new Maps();

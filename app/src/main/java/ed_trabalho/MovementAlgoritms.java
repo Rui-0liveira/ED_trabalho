@@ -4,9 +4,6 @@ package ed_trabalho;
  * @author 8210191 Rodrigo Lopes
  * @author 8210322 Rui Oliveira
  */
-
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Random;
 
 import ClassImplementation.ArrayList;

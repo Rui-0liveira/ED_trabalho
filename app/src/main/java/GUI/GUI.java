@@ -5,15 +5,8 @@ package GUI;
  */
 
 import com.mxgraph.model.mxCell;
-
-import com.mxgraph.model.mxGeometry;
-
-
 import com.mxgraph.swing.mxGraphComponent;
 import com.mxgraph.view.mxGraph;
-
-import com.mxgraph.view.mxStylesheet;
-
 import com.mxgraph.view.mxStylesheet;
 import javax.swing.*;
 import java.awt.*;
@@ -102,7 +95,7 @@ public class GUI {
                 String name1 = txtplayer1.getText();
                 String name2 = txtplayer2.getText();
                 game.initiatePlayer(name1, name2);
-                cardLayout.show(cards, "MAP_PANEL"); // Alterna para a página de seleção de mapa
+                cardLayout.show(cards, "MAP_PANEL");
             }
         });
 
@@ -234,10 +227,7 @@ public class GUI {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 
-        //flagsComboBox1 = new JComboBox<>();
         JLabel lbFlag1 = new JLabel("Flag 1 position:");
-    
-        //flagsComboBox2 = new JComboBox<>();
         JLabel lbFlag2 = new JLabel("Flag 2 position:");
         
         JButton btn_flags = new JButton("Flags");
@@ -245,7 +235,7 @@ public class GUI {
         btn_flags.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Converta para String primeiro antes de converter para int
+
                 int flag1 = Integer.parseInt((String) flagsComboBox1.getSelectedItem());
                 int flag2 = Integer.parseInt((String) flagsComboBox2.getSelectedItem());
                 int op = 0;
@@ -263,25 +253,19 @@ public class GUI {
                     e1.printStackTrace();
                 }
                 if(op == 1){
-                cardLayout.show(cards, "BOT_PANEL"); // Alterna para a página de seleção de algoritmos
+                cardLayout.show(cards, "BOT_PANEL");
                 }
                 else{
                     cardLayout.show(cards, "FLAGS_PANEL");
                 }
             }
         });
-        
-    
-        // Adiciona a ComboBox à sua janela ou painel conforme necessário
-        
     
         panel.add(lbFlag1);
         panel.add(flagsComboBox1);
         panel.add(lbFlag2);
         panel.add(flagsComboBox2);
         panel.add(btn_flags);
-    
-        // ...
     
         return panel;
     }
@@ -304,16 +288,24 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 String name1 = txtplayer.getText();
                 numberofbots = Integer.parseInt(name1);
-                JPanel algorithmPanel = AlgorithmPanel(0);
-                for(int i = 0; i < 2; i++){
-                    for(int j = 0; j < numberofbots; j++){
-                        Bot bot = new Bot(game.getPlayers().get(i).getFlag().getIndex(),j+1);
-                        game.getMap().getLocation(game.getPlayers().get(i).getFlag().getIndex()).addBot(bot);
-                        game.getPlayers().get(i).addBot(bot);
-                    }
+                if(numberofbots > game.getMap().getLocations().length/10){
+                    JOptionPane.showMessageDialog(frame, "Invalid number of bots!");
+                    JPanel botPanel = botPanel();
+                    cards.add(botPanel, "BOT_PANEL");
+                    cardLayout.show(cards, "BOT_PANEL");
                 }
-                cards.add(algorithmPanel, "ALGORITHM_PANEL");
-                cardLayout.show(cards, "ALGORITHM_PANEL");
+                else{
+                    for(int i = 0; i < 2; i++){
+                        for(int j = 0; j < numberofbots; j++){
+                            Bot bot = new Bot(game.getPlayers().get(i).getFlag().getIndex(),j+1);
+                            game.getMap().getLocation(game.getPlayers().get(i).getFlag().getIndex()).addBot(bot);
+                            game.getPlayers().get(i).addBot(bot);
+                        }
+                    }
+                    JPanel algorithmPanel = AlgorithmPanel(0);
+                    cards.add(algorithmPanel, "ALGORITHM_PANEL");
+                    cardLayout.show(cards, "ALGORITHM_PANEL");
+                }
             }
         });
         
