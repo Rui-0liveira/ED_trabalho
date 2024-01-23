@@ -11,9 +11,9 @@ import GUI.GUI;
 
 public class Main {
     public static void main(String[] args) throws NumberFormatException, IOException {
-        //new GUI();
+        new GUI();
 
- 
+/* 
         Game game = new Game();
         
         //inicia os dados dos jogadores
@@ -97,6 +97,6 @@ public class Main {
         System.out.println(game.getMap().getNetwork().printmatriz());
 
 
-
+*/
     }
 }
