@@ -299,40 +299,22 @@ public class Game {
         }
         return false;
     }
-    
-    //funçao para o player escolher o algoritmo utilizado pelo bot
-    public void chooseAlgoritms() throws IOException{
-        System.out.println("Algoritms: ");
-        System.out.println("1 - Shortest Path");
-        System.out.println("2 - Random Path");
-        System.out.println("3 - Greedy Path");
-        System.out.println("4 - Dumb Path");
-        for(int i = 0; i < players.size(); i++){
-            System.out.println("Player " + players.get(i).getName() + " choose a algoritms: ");
-            choice(players.get(i));
-        }
-    }
 
-    public void choice(Player player) throws IOException{
-        for(int j = 0; j < player.getBots().size(); j++){
-            System.out.println("Bot " + player.getBots().get(j).getIndex() +  ": ");
-            int index = lerInt();
-            if(index == 1){
-                player.getBots().get(j).setMov( MovEnum.SHORTESTPATH);
-            }
-            else if(index == 2){
-                player.getBots().get(j).setMov(MovEnum.RANDOMPATH);
-            }
-            else if(index == 3){
-                player.getBots().get(j).setMov(MovEnum.GREEDYPATH);
-            }
-            else if(index == 4){
-                player.getBots().get(j).setMov(MovEnum.DUMBPATH);
-            }
-            else{
-                System.out.println("Invalid index!");
-                j--;
-            }
+    public void chooseAlgoritms(Player player,int index ,int op) throws IOException{
+        if(op == 1){
+            player.getBots().get(index).setMov(MovEnum.SHORTESTPATH);
+        }
+        else if(op == 2){
+            player.getBots().get(index).setMov(MovEnum.RANDOMPATH);
+        }
+        else if(op == 3){
+            player.getBots().get(index).setMov(MovEnum.GREEDYPATH);
+        }
+        else if(op == 4){
+            player.getBots().get(index).setMov(MovEnum.DUMBPATH);
+        }
+        else{
+            System.out.println("Invalid index!");
         }
     }
 
