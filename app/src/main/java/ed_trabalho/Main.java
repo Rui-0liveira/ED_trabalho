@@ -8,9 +8,13 @@ import GUI.GUI;
 public class Main {
     public static void main(String[] args) throws NumberFormatException, IOException {
         new GUI();
+<<<<<<< Updated upstream
 
 <<<<<<< Updated upstream
+=======
+>>>>>>> Stashed changes
 /* 
+
         Game game = new Game();
 =======
  
@@ -88,10 +92,14 @@ public class Main {
 
 <<<<<<< Updated upstream
 
+<<<<<<< Updated upstream
 */
 =======
 */
 
+>>>>>>> Stashed changes
+=======
+ */
 >>>>>>> Stashed changes
     }
 }

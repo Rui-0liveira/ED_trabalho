@@ -5,8 +5,19 @@ package GUI;
  * @author 8210191 Rodrigo Lopes
  * @author 8210322 Rui Oliveira
  */
+<<<<<<< Updated upstream
+=======
+
+import com.mxgraph.model.mxCell;
+import com.mxgraph.model.mxGeometry;
+>>>>>>> Stashed changes
 import com.mxgraph.swing.mxGraphComponent;
+import com.mxgraph.util.mxPoint;
 import com.mxgraph.view.mxGraph;
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+import com.mxgraph.view.mxStylesheet;
 >>>>>>> Stashed changes
 
 import javax.swing.*;
@@ -14,10 +25,16 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.Hashtable;
 import java.util.Random;
 
 import ed_trabalho.*;
+import com.mxgraph.util.mxConstants;
 
+/**
+ * Classe que implementa a interface gráfica do jogo.
+ *
+ */
 public class GUI {
 
     private Game game;
@@ -27,12 +44,15 @@ public class GUI {
     private JComboBox<String> flagsComboBox1 = new JComboBox<>();
     private JComboBox<String> flagsComboBox2 = new JComboBox<>();
     private int numberofbots;
-    private JComboBox<String> comboBox1; 
-    private JComboBox<String> comboBox2;
-    private JLabel lbplayer;
     private Random random = new Random();
     private int vez = random.nextInt(2);
+    private int mov[] = new int[2];
+    private String movimento = "";
 
+    /**
+     * Construtor da classe GUI.
+     * É responsavel pelo fluxo das paginas do jogo.
+     */
     public GUI() {
         game = new Game();
 
@@ -42,11 +62,9 @@ public class GUI {
         cardLayout = new CardLayout();
         cards = new JPanel(cardLayout);
 
-        // Página de inserção de jogadores
         JPanel playerPanel = createPlayerPanel();
         cards.add(playerPanel, "PLAYER_PANEL");
 
-        // Página de seleção de mapa
         JPanel mapPanel = createMapPanel();
         cards.add(mapPanel, "MAP_PANEL");
 
@@ -62,7 +80,7 @@ public class GUI {
         JPanel startPanel = StartPanel();
         cards.add(startPanel, "START_PANEL");
 
-        cardLayout.show(cards, "PLAYER_PANEL"); // Mostra a página de inserção de jogadores por padrão
+        cardLayout.show(cards, "PLAYER_PANEL"); 
 
         frame.add(cards);
         frame.pack();
@@ -70,6 +88,11 @@ public class GUI {
         frame.setVisible(true);
     }
 
+    /**
+     * Painel de seleção de jogadores
+     * Permite o utilizador inserir o nome dos jogadores
+     * @return painel de seleção de jogadores
+     */
     private JPanel createPlayerPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -98,6 +121,12 @@ public class GUI {
         return panel;
     }
 
+
+    /**
+     * Painel de seleção de mapa
+     * Permite o utilizador escolher entre importar um mapa ou criar um novo mapa
+     * @return painel de seleção de mapa
+     */
     private JPanel createMapPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -127,6 +156,13 @@ public class GUI {
         return panel;
     }
 
+
+    /**
+     * Painel de inserção de mapa
+     * Permite o utilizador inserir o número de vértices e a densidade do mapa
+     * O mapa pode ser direcional ou bidirecional
+     * @return painel de inserção de mapa
+     */
     private JPanel insertMapPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -158,7 +194,6 @@ public class GUI {
                     game.getMap().exportMap();
                     JOptionPane.showMessageDialog(frame, "Map created successfully!");
     
-                    // Preenche a ComboBox apenas quando o mapa estiver criado e a janela estiver aberta
                     fillComboBox();
     
                     cardLayout.show(cards, "FLAGS_PANEL");
@@ -178,19 +213,29 @@ public class GUI {
         return panel;
     }
     
+
+    /**
+     * Preenche a ComboBox com os vértices do mapa
+     * Necessaria para a seleção das flags seja feita corretamente
+     */
     private void fillComboBox() {
         String[] op = new String[game.getMap().getLocations().length];
         for (int i = 0; i < game.getMap().getLocations().length; i++) {
             op[i] = String.valueOf(i);
         }
-
-        // Atualiza a ComboBox existente
         flagsComboBox1.setModel(new DefaultComboBoxModel<>(op));
         flagsComboBox1.setSelectedIndex(0);
         flagsComboBox2.setModel(new DefaultComboBoxModel<>(op));
         flagsComboBox2.setSelectedIndex(0);
     }
+
     
+    /**
+     * Painel de seleção de flags
+     * Permite o utilizador escolher a posição das flags
+     * Não permite que duas flags sejam colocadas no mesmo vértice
+     * @return painel de seleção de flags
+     */
     private JPanel flagsPanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -247,7 +292,12 @@ public class GUI {
         return panel;
     }
     
-    //funçao para adicionar bots
+    /**
+     * Painel de seleção e criação de bots
+     * Permite o utilizador escolher o número de bots
+     * Chama o painel de seleção de algoritmos
+     * @return painel de seleção e criação de bots
+     */
     private JPanel botPanel(){
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -280,6 +330,13 @@ public class GUI {
         return panel;
     }
 
+
+    /**
+     * Painel de seleção de algoritmos
+     * Permite o utilizador escolher o algoritmo para cada bot
+     * @param temp numero do bot da pagina atual
+     * @return painel de seleção de algoritmos
+     */
     private JPanel AlgorithmPanel(int temp) {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -313,13 +370,25 @@ public class GUI {
             public void actionPerformed(ActionEvent e) {
                 int p1 = comboBox1.getSelectedIndex();
                 int p2 = comboBox2.getSelectedIndex();
+                int stop = 0;
                 try {
-                    game.chooseAlgoritms(game.getPlayers().get(0), temp, p1 + 1);
-                    game.chooseAlgoritms(game.getPlayers().get(1), temp, p2 + 1);
+                    if(game.checkAlgoritms(game.getPlayers().get(0), p1 + 1) || game.checkAlgoritms(game.getPlayers().get(1), p2 + 1)){
+                        JOptionPane.showMessageDialog(frame, "Invalid algorithm!");
+                        stop = 1;
+                    }
+                    else{
+                        game.chooseAlgoritms(game.getPlayers().get(0), temp, p1 + 1);
+                        game.chooseAlgoritms(game.getPlayers().get(1), temp, p2 + 1);
+                    }
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-                if (temp != numberofbots - 1) {
+                if(stop==1){
+                    JPanel algorithmPanel = AlgorithmPanel(temp);
+                    cards.add(algorithmPanel, "ALGORITHM_PANEL");
+                    cardLayout.show(cards, "ALGORITHM_PANEL");
+                }
+                else if (temp != numberofbots - 1) {
                     JPanel algorithmPanel = AlgorithmPanel(temp + 1);
                     cards.add(algorithmPanel, "ALGORITHM_PANEL");
                     cardLayout.show(cards, "ALGORITHM_PANEL");
@@ -334,6 +403,12 @@ public class GUI {
         return panel;
     }
 
+    /**
+     * Painel de começar o jogo
+     * Painel para iniciar o jogo
+     * Apenas contem um butao para iniciar o jogo
+     * @return painel de jogo
+     */
     private JPanel StartPanel(){
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -351,6 +426,13 @@ public class GUI {
         return panel;
     }
     
+
+    /**
+     * Painel de jogo
+     * Este painel é onde ocorre todo tipo de atividades durante a partida
+     * A cada movimento o painel é atualizado com as novas informações
+     * @return painel de jogo
+     */
     private JPanel gamePanel() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
@@ -363,36 +445,53 @@ public class GUI {
             int centerX = 700;
             int centerY = 400;
             int radius = game.getMap().getLocations().length * 20;
-    
+
             for (int i = 0; i < game.getMap().getLocations().length; i++) {
                 double angle = (2 * Math.PI * i) / game.getMap().getLocations().length;
                 int x = (int) (centerX + radius * Math.cos(angle));
                 int y = (int) (centerY + radius * Math.sin(angle));
                 int playerIndex = -1;
 
-                if(game.getMap().getLocation(i).getBot() != null){
-                    for(int j = 0; j < game.getPlayers().size(); j++){
-                        if(game.getPlayers().get(j).getBotTurn() == game.getMap().getLocation(i).getBot()){
+                if(game.getMap().getLocation(i).getHasBot()){
+                    for(int j = 0; j < 2; j++){
+                        if(game.getPlayers().get(j).isBot(game.getMap().getLocation(i).getBot())){
                             playerIndex = j;
                         }
                     }
                 }
 
-                String fillColor = (playerIndex == 0) ? "#00FF00" : (playerIndex == 1) ? "#FF0000" : "#FFFFFF";
-    
+                String fillColor = (playerIndex == 0) ? "#0000FF" : (playerIndex == 1) ? "#FF0000" : "#FFFFFF";
+                
                 if (game.getMap().getLocation(i).getHasBot()) {
                     vertices[i] = graph.insertVertex(parent, null, i + "\nBot: " + game.getMap().getLocation(i).getBot().getIndex(), x, y, 60, 60, "fillColor=" + fillColor);
                 } else {
-                    vertices[i] = graph.insertVertex(parent, null, i, x, y, 20, 20, "fillColor=" + fillColor);
+                    if(game.getMap().getLocation(i).getHasFlag()){
+                        fillColor = (game.getMap().getLocation(i).getFlag().getColour()=="RED") ? "#FF0000" : "#0000FF";
+                        vertices[i] = graph.insertVertex(parent, null, i + "\nFlag: " + game.getMap().getLocation(i).getFlag().getColour(), x, y, 60, 60, "fillColor=" + fillColor);
+                    }
+                    else{
+                        vertices[i] = graph.insertVertex(parent, null, i, x, y, 20, 20, "fillColor=" + fillColor);
+                    }
                 }
             }
-    
             for (int i = 0; i < game.getMap().getLocations().length; i++) {
                 for (int j = 0; j < game.getMap().getLocations().length; j++) {
                     if (i != j && game.getMap().getNetwork().hasEdge(i, j)) {
                         graph.insertEdge(parent, null, game.getMap().getNetwork().getAdjMatrix()[i][j], vertices[i], vertices[j]);
                     }
                 }
+            } 
+
+            if (mov[0] != -1 && mov[1] != -1) {
+                mxCell edge = (mxCell) graph.insertEdge(parent, null, game.getMap().getNetwork().getAdjMatrix()[mov[0]][mov[1]], vertices[mov[0]], vertices[mov[1]]);
+
+                Hashtable<String, Object> estiloAresta = new Hashtable<>();
+                estiloAresta.put(mxConstants.STYLE_STROKECOLOR, "#009900");
+                estiloAresta.put(mxConstants.STYLE_FONTCOLOR, "#009900");
+
+                mxStylesheet stylesheet = graph.getStylesheet();
+                stylesheet.putCellStyle("estiloArestaVermelha", estiloAresta);
+                graph.setCellStyle("estiloArestaVermelha", new Object[]{edge});
             }
         } finally {
             graph.getModel().endUpdate();
@@ -404,7 +503,22 @@ public class GUI {
     
         panel.revalidate();
         panel.repaint();
-    
+
+        for(int i=0;i<numberofbots;i++){
+            if(game.Win(game.getPlayers().get(0).getBots().get(i), game.getPlayers().get(1))){
+                JOptionPane.showMessageDialog(frame, "Player 1 won!(bot "+(i+1)+" chegou a bandeira)");
+                System.exit(0);
+            }
+            else if(game.Win(game.getPlayers().get(1).getBots().get(i), game.getPlayers().get(0))){
+                JOptionPane.showMessageDialog(frame, "Player 2 won!(bot "+(i+1)+" chegou a bandeira)");
+                System.exit(0);
+            }
+        }
+
+        JLabel lblMovimento = new JLabel("Movimento Atual:" + movimento);
+        lblMovimento.setAlignmentX(Component.CENTER_ALIGNMENT);
+        panel.add(lblMovimento);
+
         JButton btnproximaronda = new JButton("avançar");
         btnproximaronda.addActionListener(new ActionListener() {
             @Override
@@ -412,18 +526,27 @@ public class GUI {
                 
                 try {
                     if(vez == 0){
-                        game.play(game.getPlayers().get(0));
+                        mov[0]= game.getPlayers().get(0).getBotTurn().getLocation();
+                        movimento = "Player 1 moveu o bot "+ game.getPlayers().get(0).getBotTurn().getIndex() +" de "+ mov[0] +" para ";
+                        mov[1] = game.play(game.getPlayers().get(0));
+                        movimento += mov[1] + " ";
+                        movimento += " com peso " + game.getMap().getNetwork().getAdjMatrix()[mov[0]][mov[1]];
                         vez = 1;
+                        
                     }
                     else if(vez==1){
-                        game.play(game.getPlayers().get(1));
+                        mov[0]= game.getPlayers().get(1).getBotTurn().getLocation();
+                        movimento = "Player 2 moveu o bot "+ game.getPlayers().get(1).getBotTurn().getIndex() +" de "+ mov[0] +" para ";
+                        mov[1] = game.play(game.getPlayers().get(1));
+                        movimento += mov[1] + " ";
+                        movimento += " com peso " + game.getMap().getNetwork().getAdjMatrix()[mov[0]][mov[1]];
                         vez = 0;
                     }
                     
                 } catch (IOException e1) {
                     e1.printStackTrace();
                 }
-    
+                lblMovimento.setText("Movimento Atual: " + movimento ); 
                 JPanel gamePanel = gamePanel();
                 cards.add(gamePanel, "GAME_PANEL");
                 cardLayout.show(cards, "GAME_PANEL");

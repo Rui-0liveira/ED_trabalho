@@ -224,7 +224,7 @@ public class Game {
         return players.get(randomNumber);
     }
     
-    public void play(Player player) throws IOException{
+    public int play(Player player) throws IOException{
 
         int mov = movBot(player.getBotTurn(), player);
         if(mov == -1){
@@ -246,7 +246,7 @@ public class Game {
             System.out.println(player.getBotTurn().getMovEnum());
             System.out.println("mesmo sitio");
         }
-        System.out.println(player.getFlag().getColour());
+        return mov;
     }
 
     //funçao movBot que recebe bot e devolve o movimento que vai fazer consuante o algoritmo que ele escolheu
@@ -278,12 +278,8 @@ public class Game {
 
     //funçao que verifica se tem um bot na localizaçao da bandeira do jogador
     public boolean Win(Bot bot, Player player){
-        for(int i = 0; i < players.size(); i++){
-            if(players.get(i) != player){
-                if(players.get(i).getFlag().getIndex() == bot.getLocation()){
-                    return true;
-                }
-            }
+        if(player.getFlag().getIndex() == bot.getLocation()){
+            return true;
         }
         return false;
     }
@@ -304,6 +300,28 @@ public class Game {
         else{
             System.out.println("Invalid index!");
         }
+    }
+
+    //funçao que recebe um algoritmo e ve se esse ja esta em algum bot do jogador
+    public boolean checkAlgoritms(Player player, int op){
+        for(int i = 0; i < player.getBots().size(); i++){
+            if(player.getBots().get(i).getMovEnum() == null){
+                return false;
+            }
+            if(player.getBots().get(i).getMovEnum().equals(MovEnum.SHORTESTPATH) && op == 1){
+                return true;
+            }
+            else if(player.getBots().get(i).getMovEnum().equals(MovEnum.RANDOMPATH) && op == 2){
+                return true;
+            }
+            else if(player.getBots().get(i).getMovEnum().equals(MovEnum.GREEDYPATH) && op == 3){
+                return true;
+            }
+            else if(player.getBots().get(i).getMovEnum().equals(MovEnum.DUMBPATH) && op == 4){
+                return true;
+            }
+        }
+        return false;
     }
 
 
