@@ -6,6 +6,7 @@ package ed_trabalho;
  */
 
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 
 import ClassImplementation.ArrayList;
@@ -33,30 +34,24 @@ public class MovementAlgoritms {
      *         a bandeira.
      */
     public static int moveShortestPath(Bot bot, Maps map, Locations flag) {
-        Maps map1 = map;
-        int index1 = bot.getLocation();
         int index2 = flag.getIndex();
-
-        if (map1 == null) {
-            return -1;
-        }
-        Iterator<Locations> iterator = map.getNetwork().iteratorShortestPath(index1, index2);
-        if (iterator.hasNext()) {
-            iterator.next();
-            Locations currentLocation = iterator.next();
-
-            if (currentLocation.getHasFlag() || !currentLocation.getHasBot()) {
-                return currentLocation.getIndex();
-            } else {
-
-                map1.removeLocal(currentLocation);
-
-                return moveShortestPath(bot, map, flag);
-            }
-        } else
-
-        {
+        int index1 = bot.getLocation();
+        Maps map1 = map;
+        ArrayList<Integer> path = map1.getNetwork().dijkstraAlgorithm(index1, index2);
+        if (path.size() == 1) {
             return index1;
+        }
+        int nextVertex = path.get(1);
+        Locations currentLocation = map1.getNetwork().getVertex(nextVertex);
+
+        if (!currentLocation.getHasFlag() && currentLocation.getHasBot()) {
+            map1.removeLocal(currentLocation);
+            return moveShortestPath(bot, map, flag);
+        }else if(currentLocation.getHasFlag() && currentLocation.getHasBot()){
+            return index1;
+            
+        } else {
+            return nextVertex;
         }
     }
 
@@ -68,9 +63,8 @@ public class MovementAlgoritms {
      * lugar.
      * Se não há caminho para a bandeira, o método retorna -1.
      *
-     * @param bot  O bot que está sendo movido.
-     * @param map  O mapa no qual o bot está se movendo.
-     * @param flag A localização da bandeira.
+     * @param bot O bot que está sendo movido.
+     * @param map O mapa no qual o bot está se movendo.
      * @return O índice do próximo vértice no caminho mais curto, ou o índice atual
      *         do bot se o próximo vértice tem um bot, ou -1 se não há caminho para
      *         a bandeira.
@@ -118,9 +112,9 @@ public class MovementAlgoritms {
      * O método getClosestVertex retorna o índice do vértice disponível que está
      * mais próximo da bandeira.
      *
-     * @param bot               O bot que está sendo movido.
+     * @param bot O bot que está sendo movido.
      * @param availableVertices Uma lista de índices de vértices disponíveis.
-     * @param map               O mapa no qual o bot está se movendo.
+     * @param maP O mapa no qual o bot está se movendo.
      * @return O índice do vértice mais próximo da bandeira.
      */
     private static int getClosestVertex(Bot bot, ArrayList<Integer> availableVertices, Maps map) {
@@ -165,9 +159,9 @@ public class MovementAlgoritms {
      * O método getLongestVertex retorna o índice do vértice disponível que está
      * mais distante.
      *
-     * @param bot               O bot que está sendo movido.
+     * @param bot O bot que está sendo movido.
      * @param availableVertices Uma lista de índices de vértices disponíveis.
-     * @param map               O mapa no qual o bot está se movendo.
+     * @param map O mapa no qual o bot está se movendo.
      * @return O índice do vértice mais distante.
      */
     private static int getLongestVertex(Bot bot, ArrayList<Integer> availableVertices, Maps map) {
@@ -186,13 +180,17 @@ public class MovementAlgoritms {
     }
 
     /**
-     * O método findAvailableVertices retorna uma lista de índices de vértices
-     * disponíveis.
-     * Um vértice está disponível se não tem um bot e há uma aresta do vértice atual
-     * do bot para ele.
+     * Este método privado e estático encontra todos os vértices disponíveis a
+     * partir de um vértice atual em um mapa, excluindo a última localização.
+     * Um vértice é considerado disponível se a matriz de adjacência entre o vértice
+     * atual e o vértice em questão é maior que 0 e menor que 16,
+     * e se a localização correspondente ao vértice não tem um bot e não é a última
+     * localização.
      *
-     * @param currentVertex O índice do vértice atual do bot.
-     * @param map           O mapa no qual o bot está se movendo.
+     * @param currentVertex O índice do vértice atual.
+     * @param map O mapa no qual os vértices disponíveis estão sendo procurados.
+     * @param lastLocation  O índice da última localização, que deve ser excluída
+     * dos vértices disponíveis.
      * @return Uma lista de índices de vértices disponíveis.
      */
     private static ArrayList<Integer> findAvailableVertices(int currentVertex, Maps map, int lastLocation) {
@@ -221,6 +219,17 @@ public class MovementAlgoritms {
         return vertices.get(random.nextInt(vertices.size()));
     }
 
+    /**
+     * Este método privado e estático encontra todos os vértices disponíveis a
+     * partir de um vértice atual em um mapa.
+     * Um vértice é considerado disponível se a matriz de adjacência entre o vértice
+     * atual e o vértice em questão é maior que 0 e menor que 16,
+     * e se a localização correspondente ao vértice não tem um bot.
+     *
+     * @param currentVertex O índice do vértice atual.
+     * @param map O mapa no qual os vértices disponíveis estão sendo procurados.
+     * @return Uma lista de índices de vértices disponíveis.
+     */
     private static ArrayList<Integer> findAvailableVertices(int currentVertex, Maps map) {
         ArrayList<Integer> availableVertices = new ArrayList<>();
         for (int i = 0; i < map.getNetwork().getAdjMatrix().length; i++) {

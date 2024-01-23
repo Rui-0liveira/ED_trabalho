@@ -228,6 +228,27 @@ public class ArrayList<T> implements ListADT<T>, Iterable<T> {
         this.rear++;
         this.modCount++;
     }
+
+    public void add(int index, T element) {
+        if (index < 0 || index > size()) {
+            throw new IndexOutOfBoundsException("ArrayList index out of range.");
+        }
+        if (size() == list.length) {
+            expandCapacity();
+        }
+        for (int i = rear; i > index; i--) {
+            list[i] = list[i - 1];
+        }
+        list[index] = element;
+        rear++;
+    }
+
+    public void set(int index, T element) {
+        if (index < 0 || index >= size()) {
+            throw new IndexOutOfBoundsException("ArrayList index out of range.");
+        }
+        list[index] = element;
+    }
 }
 
 
