@@ -39,18 +39,14 @@ public class GameTest {
         Game game = new Game();
         int numVert = 5;
         float densidade = 50;
-
-        // Cria um grafo bidirecional
         
         try {
             game.createBiMap(numVert, densidade);
         } catch (Exception e) {
             fail("createMap threw an exception: " + e.getMessage());
         }
-        // Verifica se o número correto de vértices foi adicionado
         assertEquals(numVert, game.getMap().getLocations().length);
 
-        // Verifica se o número correto de arestas foi adicionado
         float numArestas = (numVert * (numVert - 1)) * (densidade / 50);
         assertEquals(numArestas/2, game.getMap().getNetwork().getAdjMatrix().length, 0.01); 
     } 
@@ -69,8 +65,8 @@ public class GameTest {
         assertEquals("Player1", game.getPlayers().get(0).getName());
         assertEquals("Player2", game.getPlayers().get(1).getName());
 
-        assertEquals("BLUE", game.getPlayers().get(0).getFlag().getColour());
-        assertEquals("RED", game.getPlayers().get(1).getFlag().getColour());
+        assertEquals(FlagColour.BLUE, game.getPlayers().get(0).getFlag().getColour());
+        assertEquals(FlagColour.RED, game.getPlayers().get(1).getFlag().getColour());
     }
 
     /**
@@ -85,4 +81,76 @@ public class GameTest {
             assertTrue("Distance should be between 1 and 15, but was " + distance, distance >= 1 && distance <= 15);
         }
     }
+
+    @Test
+    public void testRandomPlayer() {
+        Game game = new Game();
+        Flag flag1 = new Flag(FlagColour.BLUE);
+        Flag flag2 = new Flag(FlagColour.RED);
+        Player player1 = new Player("Player 1", flag1);
+        Player player2 = new Player("Player 2", flag2);
+
+        game.getPlayers().add(player1);
+        game.getPlayers().add(player2);
+
+        boolean player1Returned = false;
+        boolean player2Returned = false;
+
+        for (int i = 0; i < 100; i++) {
+            Player randomPlayer = game.randomPlayer();
+
+            assertTrue(randomPlayer == player1 || randomPlayer == player2);
+
+            if (randomPlayer == player1) {
+                player1Returned = true;
+            } else if (randomPlayer == player2) {
+                player2Returned = true;
+            }
+        }
+
+        assertTrue(player1Returned);
+        assertTrue(player2Returned);
+    }
+
+
+    @Test
+    public void testChooseFlags() throws IOException {
+        
+        Game game = new Game();
+        game.createMap(5, 100);
+        game.initiatePlayer("player1", "player2");
+        assertEquals(-1, game.chooseFlags(-1, 0));
+        assertEquals(-1, game.chooseFlags(0, game.getMap().getNetwork().size()));
+
+        assertEquals(0, game.chooseFlags(0, 0));
+
+        assertEquals(1, game.chooseFlags(0, 1));
+        assertTrue(game.getMap().getLocation(0).getHasFlag());
+        assertTrue(game.getMap().getLocation(1).getHasFlag());
+        assertEquals(game.getPlayers().get(0).getFlag(), game.getMap().getLocation(0).getFlag());
+        assertEquals(game.getPlayers().get(1).getFlag(), game.getMap().getLocation(1).getFlag());
+    }
+
+    @Test
+    public void testPlay() throws IOException {
+        Game game = new Game();
+        game.createMap(5, 50);
+        Flag flag1 = new Flag(FlagColour.BLUE);
+        Player player = new Player("Player 1", flag1);
+        Bot bot = new Bot(0);
+        player.addBot(bot);
+        game.getMap().getLocation(bot.getLocation()).addBot(bot);
+        game.getMap().getLocation(bot.getLocation()).setHasBot(true);
+        game.getPlayers().add(player);
+        game.getPlayers().get(0).getBotTurn().setMov(MovEnum.RANDOMPATH);
+        int newLocation = game.play(player);
+
+        assertTrue(game.getMap().getLocation(bot.getLocation()).getHasBot());
+
+        assertEquals(bot, game.getMap().getLocation(newLocation).getBot());
+
+        assertEquals(newLocation, bot.getLocation());
+    }
+
+    
 }

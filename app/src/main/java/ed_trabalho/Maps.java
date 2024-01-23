@@ -33,7 +33,6 @@ public class Maps {
      */
     public void addLocal(Locations local) {
         network.addVertex(local);
-        System.out.println("Vertex added: " + local.getIndex());
     }
 
     /**
@@ -43,7 +42,6 @@ public class Maps {
      */
     public void removeLocal(Locations local) {
         network.removeVertex(local);
-        System.out.println("Vertex removed: " + local.getIndex());
     }
 
     /**
@@ -55,7 +53,6 @@ public class Maps {
     public void addFlag(int index, Flag flag) {
         network.getVertex(index).setFlag(flag);
         network.getVertex(index).setHasFlag(true);
-        System.out.println("Flag added to vertex: " + index);
     }
 
     /**
@@ -66,7 +63,6 @@ public class Maps {
     public void removeFlag(int index) {
         network.getVertex(index).setFlag(null);
         network.getVertex(index).setHasFlag(false);
-        System.out.println("Flag removed from vertex: " + index);
     }
 
     /**
@@ -121,8 +117,6 @@ public class Maps {
                 double weight = edgeJson.getDouble("weight");
                 this.network.addEdge(source, target, weight);
             }
-
-            System.out.println("Mapa importado com sucesso de " + file);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -162,7 +156,6 @@ public class Maps {
 
         try (FileWriter file = new FileWriter("map.json")) {
             file.write(json.toString());
-            System.out.println("Mapa exportado com sucesso para map.json");
         } catch (IOException e) {
             e.printStackTrace();
         }
