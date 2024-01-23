@@ -1,23 +1,34 @@
 package ed_trabalho;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Random;
-
 import ClassImplementation.LinkedList;
-
 import java.util.InputMismatchException;
 
+/**
+ * A classe Game representa o jogo
+ * Cada jogo tem um mapa e 2 jogadores
+ * 
+ */
 public class Game {
     private Maps map;
     private LinkedList<Player> players;
 
+    /**
+     * Construtor da classe Game
+     */
     public Game(){
         this.map = new Maps();
         this.players = new LinkedList<Player>();
     }
 
+    /**
+     * Função que cria o mapa apartir do numero de vertices e a densidade
+     * @param numVert numero de vertices do mapa
+     * @param densidade densidade do mapa
+     * @throws NumberFormatException 
+     * @throws IOException
+     */
     public void createMap(int numVert, float densidade) throws NumberFormatException, IOException{
         for (int i = 0; i < numVert; i++) {
             Locations newLocation = new Locations();
@@ -41,7 +52,17 @@ public class Game {
     }
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
 =======
+=======
+    /**
+     * Função que cria o mapa bidirecional apartir do numero de vertices e a densidade
+     * @param numVert numero de vertices do mapa
+     * @param densidade densidade do mapa
+     * @throws NumberFormatException 
+     * @throws IOException
+     */
+>>>>>>> Stashed changes
     public void createBiMap(int numVert, float densidade) throws NumberFormatException, IOException{
         for (int i = 0; i < numVert; i++) {
             Locations newLocation = new Locations();
@@ -65,6 +86,7 @@ public class Game {
         }
     }
 
+<<<<<<< Updated upstream
 >>>>>>> Stashed changes
 
     public int lerInt() throws IOException{
@@ -84,17 +106,24 @@ public class Game {
         }
     }
     
+=======
+>>>>>>> Stashed changes
     
+    /**
+     * Inicia os jogadores
+     * @param name1 nome do jogador 1
+     * @param name2 nome do jogador 2
+     */
     public void initiatePlayer(String name1, String name2){
-        //cria os dois jogadores
         Flag flag1 = new Flag();
-        flag1.setColour("BLUE");
+        flag1.setColour(FlagColour.BLUE);
         Flag flag2 = new Flag();
-        flag2.setColour("RED");
+        flag2.setColour(FlagColour.RED);
         Player player1 = new Player(name1, flag1);
         Player player2 = new Player(name2, flag2);
         players.add(player1);
         players.add(player2);
+<<<<<<< Updated upstream
         System.out.println(name1 + " " + name2);
         /*for(int i = 0; i < 2; i++){
             System.out.println("Insira o nome do jogador " + (i + 1) + ": ");
@@ -114,30 +143,56 @@ public class Game {
             Player player = new Player(name, flag);
             players.add(player);
         }*/
+=======
+>>>>>>> Stashed changes
     }
 
-    //da para inserir so enters (nao pode)
-    public String ler() throws IOException{
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in)); 
-        return br.readLine();
-    } 
     
-
+    /**
+     * Função que gera um distancia aleatoria
+     * @return distancia aleatoria entre 1 e 15
+     */
     public int randomDistance() {
         Random random = new Random();
         int randomNumber = random.nextInt(15) + 1;
         return randomNumber;
     }
 
+
+    /**
+     * Função que gera um jogador aleatorio entre os 2
+     * @return jogador aleatorio
+     */
+    public Player randomPlayer(){
+        Random random = new Random();
+        int randomNumber = random.nextInt(2);
+        return players.get(randomNumber);
+    }
+
+
+    /**
+     * Função get do mapa
+     * @return mapa
+     */
     public Maps getMap() {
         return map;
     }
 
+
+    /**
+     * Função get dos jogadores
+     * @return jogadores
+     */
     public LinkedList<Player> getPlayers() {
         return players;
     }
     
 
+    /**
+     * Função de pesquisar um jogador pelo nome
+     * @param name nome do jogador
+     * @return jogador
+     */
     public Player getPlayerByName(String name){
         for(int i = 0; i < players.size(); i++){
             if(players.get(i).getName().equals(name)){
@@ -148,7 +203,13 @@ public class Game {
     }
 
 
-
+    /**
+     * Função que adiciona as bandeiras dos jogadores no mapa
+     * @param flag1 index da bandeira do jogador 1
+     * @param flag2 index da bandeira do jogador 2
+     * @return 1 se as bandeiras forem diferentes, 0 se forem iguais e -1 se forem invalidas
+     * @throws IOException
+     */
     public int chooseFlags(int flag1, int flag2) throws IOException{
         if (flag1<0 || flag2<0) {
             return -1;
@@ -193,6 +254,7 @@ public class Game {
     }
 
 
+<<<<<<< Updated upstream
     public void addBots() throws IOException{
         System.out.println("Insira o numero de bots: ");
         int numBots = lerInt();
@@ -223,7 +285,17 @@ public class Game {
         }*/
         return players.get(randomNumber);
     }
+=======
+>>>>>>> Stashed changes
     
+    
+
+    /**
+     * Função que trata do movimento de um bot
+     * @param player jogador que vai fazer o movimento
+     * @return posição para onde o bot se moveu
+     * @throws IOException
+     */
     public int play(Player player) throws IOException{
 
         int mov = movBot(player.getBotTurn(), player);
@@ -242,14 +314,16 @@ public class Game {
                 player.setTurnTrue();
             }
         }
-        else{
-            System.out.println(player.getBotTurn().getMovEnum());
-            System.out.println("mesmo sitio");
-        }
         return mov;
     }
 
-    //funçao movBot que recebe bot e devolve o movimento que vai fazer consuante o algoritmo que ele escolheu
+    
+    /**
+     * Função que devolve o movimento de um bot apartir do algoritmo que este tem
+     * @param bot bot que vai fazer o movimento
+     * @param player jogador que vai fazer o movimento
+     * @return posição para onde o bot se deve mover
+     */
     public int movBot(Bot bot, Player player){
         if(bot.getMovEnum().equals(MovEnum.SHORTESTPATH)){
             Locations location;
@@ -276,7 +350,12 @@ public class Game {
     }
     
 
-    //funçao que verifica se tem um bot na localizaçao da bandeira do jogador
+    /**
+     * Função que verifica se um jogador ganhou
+     * @param bot bot que deseja verificar se ganhou
+     * @param player jogador inimigo do bot
+     * @return true se o bot ganhou, false se não
+     */
     public boolean Win(Bot bot, Player player){
         if(player.getFlag().getIndex() == bot.getLocation()){
             return true;
@@ -284,6 +363,14 @@ public class Game {
         return false;
     }
 
+
+    /**
+     * Função de escolher um algoritmo para um bot
+     * @param player jogador que vai escolher o algoritmo
+     * @param index index do bot que vai receber o algoritmo
+     * @param op opção do algoritmo
+     * @throws IOException
+     */
     public void chooseAlgoritms(Player player, int index, int op) throws IOException{
         if(op == 1){
             player.getBots().get(index).setMov(MovEnum.SHORTESTPATH);
@@ -298,11 +385,17 @@ public class Game {
             player.getBots().get(index).setMov(MovEnum.DUMBPATH);
         }
         else{
-            System.out.println("Invalid index!");
+            throw new InputMismatchException("Invalid option!");
         }
     }
 
-    //funçao que recebe um algoritmo e ve se esse ja esta em algum bot do jogador
+    
+    /**
+     * Função que verifica se um jogador tem todos os bots com algoritmos diferentes
+     * @param player jogador que vai ser verificado
+     * @param op opção do algoritmo
+     * @return true se tiver todos os bots com algoritmos diferentes, false se não ou se for null
+     */
     public boolean checkAlgoritms(Player player, int op){
         for(int i = 0; i < player.getBots().size(); i++){
             if(player.getBots().get(i).getMovEnum() == null){
@@ -325,6 +418,9 @@ public class Game {
     }
 
 
+    /**
+     * Função toString da classe Game
+     */
     public String toString(){
         String str = "";
         for(int i = 0; i < map.getNetwork().size(); i++){

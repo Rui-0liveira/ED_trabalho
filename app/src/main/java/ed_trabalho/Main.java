@@ -1,7 +1,6 @@
 package ed_trabalho;
 
 import java.io.IOException;
-import java.util.Random;
 
 import GUI.GUI;
 
