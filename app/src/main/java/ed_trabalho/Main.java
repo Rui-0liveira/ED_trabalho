@@ -14,6 +14,7 @@ public class Main {
         new GUI();
 
 /* 
+
         Game game = new Game();
         
         //inicia os dados dos jogadores
@@ -94,8 +95,6 @@ public class Main {
         }while(true);
         //print da matriz adjacente
         System.out.println(game.getMap().getNetwork().printmatriz());
-
-
 */
     }
 }
