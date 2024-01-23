@@ -1,5 +1,9 @@
 package Interfaces;
 import java.util.Iterator;
+/**
+ * @author 8210191 Rodrigo Lopes
+ * @author 8210322 Rui Oliveira
+ */
 
 public interface BinaryTreeADT<T> {
     /**

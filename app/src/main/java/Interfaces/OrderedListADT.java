@@ -1,5 +1,8 @@
 package Interfaces;
-
+/**
+ * @author 8210191 Rodrigo Lopes
+ * @author 8210322 Rui Oliveira
+ */
 
 public interface OrderedListADT<T> extends ListADT<T> {
 	/**

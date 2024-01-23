@@ -4,6 +4,10 @@
  * and open the template in the editor.
  */
 package Interfaces;
+/**
+ * @author 8210191 Rodrigo Lopes
+ * @author 8210322 Rui Oliveira
+ */
 import Exceptions.EmptyCollectionException;
 public interface HeapADT<T> extends BinaryTreeADT<T> {
    /** 

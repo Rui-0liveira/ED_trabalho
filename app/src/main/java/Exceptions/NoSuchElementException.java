@@ -1,8 +1,8 @@
 package Exceptions;
 
 /**
- * @author 8210311 Daniela Moreira
- * @author 8210367 Orlando Pires
+ * @author 8210191 Rodrigo Lopes
+ * @author 8210322 Rui Oliveira
  */
 public class NoSuchElementException extends Throwable {
     public NoSuchElementException() {

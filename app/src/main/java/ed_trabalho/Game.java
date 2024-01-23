@@ -1,4 +1,8 @@
 package ed_trabalho;
+/**
+ * @author 8210191 Rodrigo Lopes
+ * @author 8210322 Rui Oliveira
+ */
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -40,8 +44,7 @@ public class Game {
         }
     }
 
-<<<<<<< Updated upstream
-=======
+
     public void createBiMap(int numVert, float densidade) throws NumberFormatException, IOException{
         for (int i = 0; i < numVert; i++) {
             Locations newLocation = new Locations();
@@ -65,7 +68,6 @@ public class Game {
         }
     }
 
->>>>>>> Stashed changes
 
     public int lerInt() throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -96,24 +98,7 @@ public class Game {
         players.add(player1);
         players.add(player2);
         System.out.println(name1 + " " + name2);
-        /*for(int i = 0; i < 2; i++){
-            System.out.println("Insira o nome do jogador " + (i + 1) + ": ");
-            String name = "";
-            try{
-                name = ler();
-            }catch(IOException e){
-                System.out.println("Erro na leitura do nome do jogador!");
-            }
-            Flag flag = new Flag();
-            if(i==1){
-                flag.setColour("RED");
-            }
-            else {
-                flag.setColour("BLUE");
-            }
-            Player player = new Player(name, flag);
-            players.add(player);
-        }*/
+        
     }
 
     //da para inserir so enters (nao pode)
@@ -170,26 +155,7 @@ public class Game {
             players.get(1).getFlag().setIndex(flag2);
             return 1;
         }
-        /*for(int i = 0; i < players.size(); i++){
-            System.out.println("Player " + players.get(i).getName() + " choose a flag: ");
-            int index = lerInt();
-            if(index >= map.getNetwork().size()){
-                System.out.println("Invalid index!");
-                i--;
-            }
-            else{
-                if(map.getLocation(index).getFlag() == null){
-                    map.getLocation(index).setFlag(players.get(i).getFlag());
-                    map.getLocation(index).setHasFlag(true);
-                    players.get(i).setFlag(map.getLocation(index).getFlag());
-                    players.get(i).getFlag().setIndex(index);
-                }
-                else{
-                    System.out.println("This vertex already has a flag!");
-                    i--;
-                }
-            }
-        }*/
+        
     }
 
 
@@ -215,12 +181,7 @@ public class Game {
     public Player randomPlayer(){
         Random random = new Random();
         int randomNumber = random.nextInt(2);
-        //se for igual a 1 troca do player 2 para o player 1
-        /*if(randomNumber == 1){
-            Player temp = players.get(0);
-            players.add(0, players.get(1));
-            players.add(1, temp);
-        }*/
+        
         return players.get(randomNumber);
     }
     
@@ -259,7 +220,7 @@ public class Game {
             else{
                 location = this.map.getLocation(players.getFront().getElement().getFlag().getIndex());
             }
-            return MovementAlgoritms.shortestPath(bot, map, location);
+            return MovementAlgoritms.moveShortestPath(bot, map, location);
         }
         else if(bot.getMovEnum().equals(MovEnum.RANDOMPATH)){
             return MovementAlgoritms.moveRandomly(bot, getMap());
