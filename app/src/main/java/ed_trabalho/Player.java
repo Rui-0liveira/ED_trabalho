@@ -139,6 +139,17 @@ public class Player {
         return null;
     }
 
+
+    //funçao que recebe um bot e ve se ele esta ca
+    public boolean isBot(Bot bot){
+        for(int i = 0; i < this.bots.size(); i++){
+            if(this.bots.get(i) == bot){
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Define o turno de todos os bots para true.
      */
