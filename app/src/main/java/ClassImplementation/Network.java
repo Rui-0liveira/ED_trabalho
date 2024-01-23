@@ -213,8 +213,6 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
             x = traversalStack.peek();
             found = false;
 
-            //Find a vertex adjacent to x that has not been visited and push it
-            //on the stack
             for (int i = 0; (i < numVertices) && !found; i++) {
                 if ((adjMatrix[x.intValue()][i] < Double.POSITIVE_INFINITY) && !visited[i]) {
                     traversalStack.push(Integer.valueOf(i));
@@ -255,8 +253,6 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
             x = traversalQueue.dequeue();
             resultList.addToRear(vertices[x.intValue()]);
 
-            //Find all vertices adjacent to x that have not been visited and
-            //queue them up
             for (int i = 0; i < numVertices; i++) {
                 if ((adjMatrix[x.intValue()][i] < Double.POSITIVE_INFINITY) && !visited[i]) {
                     traversalQueue.enqueue(Integer.valueOf(i));

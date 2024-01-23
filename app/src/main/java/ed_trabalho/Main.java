@@ -62,8 +62,7 @@ public class Main {
         game.addBots();
         //System.out.println("\n\n\n" + game.toString());
         
-        game.chooseAlgoritms();
-
+        
 
 
         Random random = new Random();
