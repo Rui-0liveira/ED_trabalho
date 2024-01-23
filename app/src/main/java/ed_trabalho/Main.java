@@ -11,9 +11,9 @@ import GUI.GUI;
 
 public class Main {
     public static void main(String[] args) throws NumberFormatException, IOException {
-        new GUI();
+        //new GUI();
 
-/* 
+ 
         Game game = new Game();
         
         //inicia os dados dos jogadores
@@ -28,13 +28,24 @@ public class Main {
             System.out.println("Erro na leitura do nome do jogador!");
         }
         game.initiatePlayer(name1,name2);
-        System.out.println("Insira 1 para importar map ou 2 para criar um novo");
+        System.out.println("Insira 1 para importar map/ 2 para Mapa direcional / 3 para mapa bidirecional ");
         int op = game.lerInt();
         if(op == 1){
             game.getMap().importMap("map.json");
         }
         else if(op == 2){
-            game.createMap();
+            System.out.println("Numero de Vertices: ");
+            int numVertices = game.lerInt();
+            System.out.println("Numero de Arestas: ");
+            float numArestas = game.lerInt();
+            game.createMap(numVertices, numArestas);
+            game.getMap().exportMap();
+        }else if(op == 3){
+            System.out.println("Numero de Vertices: ");
+            int numVertices = game.lerInt();
+            System.out.println("Numero de Arestas: ");
+            float numArestas = game.lerInt();
+            game.createBiMap(numVertices, numArestas);
             game.getMap().exportMap();
         }
         else{
@@ -44,7 +55,7 @@ public class Main {
         System.out.println(game.getMap().getNetwork().toString());
 
         //escolher bandeiras
-        game.chooseFlags();
+        game.chooseFlags(1, 9);
 
 
         //por um bot na localizaçao onde esta a bandeira dos dois jogador
@@ -86,6 +97,6 @@ public class Main {
         System.out.println(game.getMap().getNetwork().printmatriz());
 
 
-*/
+
     }
 }
