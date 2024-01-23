@@ -341,10 +341,18 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
     protected int getIndexOfAdjVertexWithWeightOf(boolean[] visited, double[] pathWeight, double weight) {
         for (int i = 0; i < numVertices; i++) {
             if ((pathWeight[i] == weight) && !visited[i]) {
+                double minWeight = Double.POSITIVE_INFINITY;
+                int adjIndex = -1;
+    
                 for (int j = 0; j < numVertices; j++) {
-                    if ((adjMatrix[i][j] < Double.POSITIVE_INFINITY) && visited[j]) {
-                        return i;
+                    if (!visited[j] && adjMatrix[i][j] < minWeight) {
+                        minWeight = adjMatrix[i][j];
+                        adjIndex = j;
                     }
+                }
+    
+                if (adjIndex != -1) {
+                    return adjIndex;
                 }
             }
         }
@@ -532,5 +540,50 @@ public class Network<T> extends Graph<T> implements NetworkADT<T> {
             }
         }
         return false;
+    }
+
+    
+    public ArrayList<Integer> dijkstraAlgorithm(int startIndex, int finalIndex) {
+        ArrayList<Double> distances = new ArrayList<>(numVertices);
+        ArrayList<Boolean> visited = new ArrayList<>(numVertices);
+        ArrayList<Integer> predecessor = new ArrayList<>(numVertices);
+
+        for (int i = 0; i < numVertices; i++) {
+            distances.add(Double.POSITIVE_INFINITY);
+            predecessor.add(-1);
+            visited.add(false);
+        }
+        distances.set(startIndex, 0.0);
+
+        for (int i = 0; i < numVertices; i++) {
+            int vertex = -1;
+            for (int j = 0; j < numVertices; j++) {
+                if (!visited.get(j) && (vertex == -1 || distances.get(j) < distances.get(vertex))) {
+                    vertex = j;
+                }
+            }
+
+            visited.set(vertex, true);
+
+            for (int j = 0; j < numVertices; j++) {
+                double edgeDistance = adjMatrix[vertex][j];
+                if (edgeDistance < Double.POSITIVE_INFINITY) {
+                    double newDistance = distances.get(vertex) + edgeDistance;
+                    if (newDistance < distances.get(j)) {
+                        distances.set(j, newDistance);
+                        predecessor.set(j, vertex);
+                    }
+                }
+            }
+        }
+
+        ArrayList<Integer> path = new ArrayList<>();
+        int current = finalIndex;
+        while (current != -1) {
+            path.add(0, current);
+            current = predecessor.get(current);
+        }
+
+        return path;
     }
 }
