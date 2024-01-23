@@ -5,16 +5,16 @@ package GUI;
  */
 
 import com.mxgraph.model.mxCell;
+
 import com.mxgraph.model.mxGeometry;
 
 
-
 import com.mxgraph.swing.mxGraphComponent;
-import com.mxgraph.util.mxPoint;
 import com.mxgraph.view.mxGraph;
 
 import com.mxgraph.view.mxStylesheet;
 
+import com.mxgraph.view.mxStylesheet;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -28,7 +28,6 @@ import com.mxgraph.util.mxConstants;
 
 /**
  * Classe que implementa a interface gráfica do jogo.
- *
  */
 public class GUI {
 
