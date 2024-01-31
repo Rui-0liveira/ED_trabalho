@@ -18,7 +18,6 @@ import java.util.Random;
 
 import ed_trabalho.*;
 import com.mxgraph.util.mxConstants;
-import com.mxgraph.view.mxGraph;
 
 /**
  * Classe que implementa a interface gráfica do jogo.
@@ -421,11 +420,12 @@ public class GUI {
      * @return painel de jogo
      */
     private JPanel gamePanel() {
-        // ...
-
-            mxGraph graph = new mxGraph();
-            Object parent = graph.getDefaultParent();
-            graph.getModel().beginUpdate();
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+    
+        mxGraph graph = new mxGraph();
+        Object parent = graph.getDefaultParent();
+        graph.getModel().beginUpdate();
         try {
             Object[] vertices = new Object[game.getMap().getLocations().length];
             int centerX = 700;
